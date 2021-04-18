@@ -1,4 +1,4 @@
-import {runSql} from './sql';
+import {runSql} from '../sql';
 
 export type PkValues = {
   [key: string]: number
