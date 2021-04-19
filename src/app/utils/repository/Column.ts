@@ -6,6 +6,11 @@ export const Datatype = [
   'datetime'
 ] as const;
 
+export const isValidValue = (value: any): boolean => {
+  const type = typeof value;
+  return type === 'boolean' || type === 'string' || type === 'number' || value instanceof Date;
+};
+
 // export type DecimalPrecision = [precision: number, scale: number];
 export type ColumnConstraint = [
   'isPk',
@@ -18,10 +23,14 @@ export type ColumnConstraint = [
 ];
 export const DatetimeIsoPattern = /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.([0-9]+))?(Z)?$/;
 
+export class ColumnError extends Error {
+  constructor(public messages: string[]) {
+    super('[Column Error] not valid');
+  }
+}
 
 export class Column {
   // readonly defaultDecimalPrecision: DecimalPrecision = [18, 0];
-
   public isPk = false;
   public isAutoIncrement = false;
   public isCreateTimestamp = false;
@@ -33,6 +42,41 @@ export class Column {
   // public decimalPrecision: DecimalPrecision | null = null;
 
   constructor(public name: string, public datatype: typeof Datatype[number]) {
+    const errors = this.validate();
+    if (errors) {
+      throw new ColumnError(errors);
+    }
+  }
+
+  withPk(): Column {
+    this.isPk = true;
+    this.validate();
+    return this;
+  }
+  withAutoIncrement(): Column {
+    this.isAutoIncrement = true;
+    this.validate();
+    return this;
+  }
+  withCreateTimestamp(): Column {
+    this.isCreateTimestamp = true;
+    this.validate();
+    return this;
+  }
+  withUpdateTimestamp(): Column {
+    this.isUpdateTimestamp = true;
+    this.validate();
+    return this;
+  }
+  withNullable(): Column {
+    this.isNullable = true;
+    this.validate();
+    return this;
+  }
+  withStringMaxLength(value: number): Column {
+    this.stringMaxLength = value;
+    this.validate();
+    return this;
   }
 
   checkValue(value: any, ignore: ColumnConstraint[number][]): string[] | null {
@@ -80,7 +124,7 @@ export class Column {
     return errors.length ? errors : null;
   }
 
-  validate(): string[] | null {
+  private validate(): string[] | null {
     const errors: string[] = [];
     if (this.isPk) {
       if (this.isNullable) {
@@ -93,6 +137,9 @@ export class Column {
       }
     }
     if (this.isCreateTimestamp || this.isUpdateTimestamp) {
+      if (this.isCreateTimestamp && this.isUpdateTimestamp) {
+        errors.push('Cannot be both createTimestamp and updateTimestamp');
+      }
       if (this.datatype !== 'datetime') {
         errors.push('Timestamp must be datetime');
       }
@@ -116,4 +163,32 @@ export class Column {
     return errors.length ? errors : null;
   }
 
+
+  convertToDatabase(value: any): string {
+    if (this.datatype === 'datetime') {
+      if (value instanceof Date) {
+        return value.toISOString();
+      }
+    }
+    return value;
+  }
+
+  convertFromDatabase(value: any): any {
+    if (this.datatype === 'datetime') {
+      if (typeof value === 'string') {
+        const matches = value.match(DatetimeIsoPattern);
+        if (matches) {
+          const year = Number(matches[1]);
+          const month = Number(matches[2]);
+          const day = Number(matches[3]);
+          const hours = Number(matches[4]);
+          const minutes = Number(matches[5]);
+          const seconds = Number(matches[6]);
+          const milliseconds = Number(matches[8] ?? 0);
+          return new Date(year, month, day, hours, minutes, seconds, milliseconds);
+        }
+      }
+    }
+    return value;
+  }
 }
