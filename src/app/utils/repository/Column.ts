@@ -36,6 +36,7 @@ export class Column {
   public isCreateTimestamp = false;
   public isUpdateTimestamp = false;
   public isNullable = false;
+  public isUnique = false;
 
   public stringMaxLength: number | null = null;
 
@@ -70,6 +71,11 @@ export class Column {
   }
   withNullable(): Column {
     this.isNullable = true;
+    this.validate();
+    return this;
+  }
+  withUnique(): Column {
+    this.isUnique = true;
     this.validate();
     return this;
   }
