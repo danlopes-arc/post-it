@@ -171,8 +171,8 @@ interface SQLResultSet {
  * that these columns were returned by the database. Each property must have the
  * name of the column and the value of the cell, as they were returned by the database
  */
-interface SQLResultSetRowList extends Array<any> {
-  // length: number;
+interface SQLResultSetRowList {
+  length: number;
 
   item(index: number): any;
 }
