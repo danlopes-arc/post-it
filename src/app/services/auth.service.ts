@@ -43,4 +43,8 @@ export class AuthService {
     localStorage.removeItem('username');
     this._user = null;
   }
+
+  async isUsernameUnique(username: string): Promise<boolean> {
+    return !!(await this.database.users.find({username}));
+  }
 }
