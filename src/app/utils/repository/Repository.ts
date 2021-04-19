@@ -200,7 +200,7 @@ export class Repository<Model> {
     try {
       const {rows} = await runSql(this.database, sql, args);
       if (rows.length) {
-        return this.makeModel(rows[0]);
+        return this.makeModel(rows.item(0));
       }
       return null;
     } catch (error) {
