@@ -9,6 +9,8 @@ import { RegisterPageComponent } from './components/pages/register-page/register
 import {DatabaseService} from './services/database.service';
 import { AuthRouteComponent } from './components/routes/auth-route/auth-route.component';
 import { GuestRouteComponent } from './components/routes/guest-route/guest-route.component';
+import { AuthLayoutComponent } from './components/layouts/auth-layout/auth-layout.component';
+import { GuestLayoutComponent } from './components/layouts/guest-layout/guest-layout.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { GuestRouteComponent } from './components/routes/guest-route/guest-route
     LoginPageComponent,
     RegisterPageComponent,
     AuthRouteComponent,
-    GuestRouteComponent
+    GuestRouteComponent,
+    AuthLayoutComponent,
+    GuestLayoutComponent
   ],
   imports: [
     BrowserModule,
