@@ -11,6 +11,7 @@ import { AuthRouteComponent } from './components/routes/auth-route/auth-route.co
 import { GuestRouteComponent } from './components/routes/guest-route/guest-route.component';
 import { AuthLayoutComponent } from './components/layouts/auth-layout/auth-layout.component';
 import { GuestLayoutComponent } from './components/layouts/guest-layout/guest-layout.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { GuestLayoutComponent } from './components/layouts/guest-layout/guest-la
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [DatabaseService],
   bootstrap: [AppComponent]
