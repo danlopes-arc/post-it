@@ -7,7 +7,7 @@ export class RepositoryCreationError extends Error {
   }
 }
 
-export type PkValues = {
+export type ColumnValues = {
   [key: string]: any
 };
 
@@ -16,6 +16,7 @@ export class Repository<Model> {
   protected editableColumns: Column[] = [];
   protected createTimestampColumns: Column[] = [];
   protected updateTimestampColumns: Column[] = [];
+  protected uniqueColumns: Column[] = [];
 
   protected hasPkWithAutoincrement: boolean;
 
@@ -37,6 +38,9 @@ export class Repository<Model> {
       }
       if (!column.isUpdateTimestamp) {
         this.updateTimestampColumns.push(column);
+      }
+      if (!column.isUnique) {
+        this.uniqueColumns.push(column);
       }
     });
 
@@ -101,17 +105,46 @@ export class Repository<Model> {
     });
   }
 
-  getPkValues(model: Model): PkValues {
-    const pkValues: PkValues = {};
+  getPkValues(model: Model): ColumnValues {
+    const pkValues: ColumnValues = {};
     this.pkColumns.forEach(column => pkValues[column.name] = (model as any)[column.name]);
     return pkValues;
   }
 
-  async find(): Promise<Model[]> {
-    const sql = `SELECT * FROM ${this.table};`;
+  getFindWhereCondition(terms: ColumnValues): string {
+    const columnNames = Object.getOwnPropertyNames(terms);
+    columnNames.forEach(value => {
+      const columns = this.columns.filter(c => c.name === value);
+      if (!columns.length) {
+        throw new Error(`[Error find()] table ${this.table}: column ${value} does not exist`);
+      }
+    });
+    return columnNames
+      .map(name => `${name} = ?`)
+      .join(' AND ');
+  }
+
+  getFindArguments(terms: ColumnValues): any[] {
+    const columnNames = Object.getOwnPropertyNames(terms);
+    return columnNames
+      .map(name => terms[name]);
+  }
+
+  async find(terms: ColumnValues | null = null): Promise<Model[]> {
+    if (!terms) {
+      terms = {};
+    }
+
+    let whereCondition = this.getFindWhereCondition(terms);
+    if (whereCondition) {
+      whereCondition = ' WHERE ' + whereCondition;
+    }
+
+    const sql = `SELECT * FROM ${this.table}${whereCondition};`;
+    const args = this.getFindArguments(terms);
 
     try {
-      const {rows} = await runSql(this.database, sql);
+      const {rows} = await runSql(this.database, sql, args);
       const models: Model[] = [];
       for (let i = 0; i < rows.length; i++) {
         models.push(this.makeModel(rows.item(i)));
@@ -126,7 +159,7 @@ export class Repository<Model> {
     throw new Error();
   }
 
-  getPkArguments(pk: PkValues): any[] {
+  getPkArguments(pk: ColumnValues): any[] {
     const pkCount = Object.getOwnPropertyNames(pk).length;
     if (pkCount !== this.pkColumns.length) {
       throw new Error(`FindById: table ${this.table} has ${this.pkColumns.length} pks, got ${pkCount}`);
@@ -144,7 +177,10 @@ export class Repository<Model> {
 
     try {
       const {rows} = await runSql(this.database, sql, args);
-      return this.makeModel(rows[0]);
+      if (rows.length) {
+        return this.makeModel(rows[0]);
+      }
+      return null;
     } catch (error) {
       console.error(`[SQL Error] findById on table ${this.table}`,
         '\nStatement:', sql,
