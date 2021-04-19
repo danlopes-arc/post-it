@@ -83,6 +83,39 @@ export class Repository<Model> {
       .join(' AND ');
   }
 
+  getPkValues(model: Model): ColumnValues {
+    const pkValues: ColumnValues = {};
+    this.pkColumns.forEach(column => pkValues[column.name] = (model as any)[column.name]);
+    return pkValues;
+  }
+
+  getPkArguments(pk: ColumnValues): any[] {
+    const pkCount = Object.getOwnPropertyNames(pk).length;
+    if (pkCount !== this.pkColumns.length) {
+      throw new Error(`FindById: table ${this.table} has ${this.pkColumns.length} pks, got ${pkCount}`);
+    }
+    return this.pkColumns.map(column => pk[column.name]);
+  }
+
+  getFindWhereCondition(terms: ColumnValues): string {
+    const columnNames = Object.getOwnPropertyNames(terms);
+    columnNames.forEach(value => {
+      const columns = this.columns.filter(c => c.name === value);
+      if (!columns.length) {
+        throw new Error(`[Error find()] table ${this.table}: column ${value} does not exist`);
+      }
+    });
+    return columnNames
+      .map(name => `${name} = ?`)
+      .join(' AND ');
+  }
+
+  getFindArguments(terms: ColumnValues): any[] {
+    const columnNames = Object.getOwnPropertyNames(terms);
+    return columnNames
+      .map(name => terms[name]);
+  }
+
   getInsertColumnNamesText(): string {
     return this.editableColumns
       .map(column => column.name)
@@ -105,29 +138,26 @@ export class Repository<Model> {
     });
   }
 
-  getPkValues(model: Model): ColumnValues {
-    const pkValues: ColumnValues = {};
-    this.pkColumns.forEach(column => pkValues[column.name] = (model as any)[column.name]);
-    return pkValues;
+  protected getUpdateSetText(): string {
+    return this.editableColumns
+      .map(column => `${column.name} = ?`)
+      .join(', ');
   }
 
-  getFindWhereCondition(terms: ColumnValues): string {
-    const columnNames = Object.getOwnPropertyNames(terms);
-    columnNames.forEach(value => {
-      const columns = this.columns.filter(c => c.name === value);
-      if (!columns.length) {
-        throw new Error(`[Error find()] table ${this.table}: column ${value} does not exist`);
+  getUpdateArguments(model: Model): any[] {
+    const columns = this.editableColumns.concat(this.pkColumns);
+    return columns.map(column => {
+      if (column.isUpdateTimestamp) {
+        return column.convertToDatabase(new Date());
       }
+      return column.convertToDatabase((model as any)[column.name]);
     });
-    return columnNames
-      .map(name => `${name} = ?`)
-      .join(' AND ');
   }
 
-  getFindArguments(terms: ColumnValues): any[] {
-    const columnNames = Object.getOwnPropertyNames(terms);
-    return columnNames
-      .map(name => terms[name]);
+  getDeleteArguments(model: Model): any[] {
+    return this.pkColumns.map(column => {
+      return column.convertToDatabase((model as any)[column.name]);
+    });
   }
 
   async find(terms: ColumnValues | null = null): Promise<Model[]> {
@@ -157,14 +187,6 @@ export class Repository<Model> {
         '\nError:', error);
     }
     throw new Error();
-  }
-
-  getPkArguments(pk: ColumnValues): any[] {
-    const pkCount = Object.getOwnPropertyNames(pk).length;
-    if (pkCount !== this.pkColumns.length) {
-      throw new Error(`FindById: table ${this.table} has ${this.pkColumns.length} pks, got ${pkCount}`);
-    }
-    return this.pkColumns.map(column => pk[column.name]);
   }
 
   async findById(pk: any): Promise<Model | null> {
@@ -210,28 +232,6 @@ export class Repository<Model> {
         '\nError:', error);
       throw new Error();
     }
-  }
-
-  protected getUpdateSetText(): string {
-    return this.editableColumns
-      .map(column => `${column.name} = ?`)
-      .join(', ');
-  }
-
-  getUpdateArguments(model: Model): any[] {
-    const columns = this.editableColumns.concat(this.pkColumns);
-    return columns.map(column => {
-      if (column.isUpdateTimestamp) {
-        return column.convertToDatabase(new Date());
-      }
-      return column.convertToDatabase((model as any)[column.name]);
-    });
-  }
-
-  getDeleteArguments(model: Model): any[] {
-    return this.pkColumns.map(column => {
-      return column.convertToDatabase((model as any)[column.name]);
-    });
   }
 
   async update(model: Model): Promise<Model | null> {
