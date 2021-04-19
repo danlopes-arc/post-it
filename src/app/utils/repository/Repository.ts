@@ -1,183 +1,220 @@
+import {Column, isValidValue} from './Column';
 import {runSql} from '../sql';
 
+export class RepositoryCreationError extends Error {
+  constructor(public messages: string[]) {
+    super('[Repository Creation Error] not valid');
+  }
+}
+
 export type PkValues = {
-  [key: string]: number
+  [key: string]: any
 };
 
 export class Repository<Model> {
+  protected pkColumns: Column[] = [];
+  protected editableColumns: Column[] = [];
+  protected createTimestampColumns: Column[] = [];
+  protected updateTimestampColumns: Column[] = [];
+
+  protected hasPkWithAutoincrement: boolean;
+
   constructor(
     protected modelType: new() => Model,
     protected database: Database,
     protected table: string,
-    protected columns: string[],
-    protected pkColumns: string[],
-    protected autoIncrementColumns: string[],
-    protected hasTimestamps: boolean
+    protected columns: Column[],
   ) {
-  }
-
-  protected getPkAndCondition(): string {
-    return this.pkColumns.reduce((prev, column, i) => {
-      return `${prev}${column} = ?${i < this.pkColumns.length - 1 ? ' AND ' : ''}`;
-    }, '');
-  }
-
-  protected getEditableColumns(mode: 'update' | 'create'): string[] {
-    const columns = this.columns.filter(c => !this.autoIncrementColumns.includes(c));
-    if (this.hasTimestamps) {
-      if (mode === 'create') {
-        columns.push('createdAt');
+    columns.forEach(column => {
+      if (column.isPk) {
+        this.pkColumns.push(column);
       }
-      columns.push('updatedAt');
-    }
-    return columns;
-  }
-
-  protected getEditableQuestionMarks(mode: 'update' | 'create'): '?'[] {
-    return this.getEditableColumns(mode).map(() => '?');
-  }
-
-  protected getEditableArguments(model: Model, mode: 'update' | 'create'): string[] {
-    return this.getEditableColumns(mode).map(column => {
-      if (this.hasTimestamps && (
-        (mode === 'create' && column === 'createdAt') || column === 'updatedAt'
-      )) {
-          return this.convertToDb(new Date());
+      if (!column.isAutoIncrement) {
+        this.editableColumns.push(column);
       }
-      return this.convertToDb(model[column]);
+      if (!column.isCreateTimestamp) {
+        this.createTimestampColumns.push(column);
+      }
+      if (!column.isUpdateTimestamp) {
+        this.updateTimestampColumns.push(column);
+      }
     });
-  }
 
-  protected getPkArguments(model: Model): string[] {
-    return this.pkColumns.map(column => this.convertToDb(model[column]));
-  }
-
-  protected getUpdateSetText(): string {
-    return this.getEditableColumns('update').reduce((prev, column, i, array) => {
-      return `${prev}${column} = ?${i < array.length - 1 ? ', ' : ''}`;
-    }, '');
-  }
-
-  protected convertToDb(value: any): string {
-    if (value instanceof Date) {
-      return value.toISOString();
-    }
-    return value;
-  }
-
-  protected convertFromDb(value: any): any {
-    if (typeof value === 'string') {
-      const pattern = /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.([0-9]+))?(Z)?$/;
-      const matches = value.match(pattern);
-      if (matches) {
-        const year = Number(matches[1]);
-        const month = Number(matches[2]);
-        const day = Number(matches[3]);
-        const hours = Number(matches[4]);
-        const minutes = Number(matches[5]);
-        const seconds = Number(matches[6]);
-        const milliseconds = Number(matches[8] ?? 0);
-        return new Date(year, month, day, hours, minutes, seconds, milliseconds);
+    const pkAiCount = this.pkColumns.reduce((prev, column) => {
+      if (column.isPk && column.isAutoIncrement) {
+        return prev + 1;
       }
+      return prev;
+    }, 0);
+
+    this.hasPkWithAutoincrement = pkAiCount === 1;
+
+    const errors: string[] = [];
+
+    if (this.pkColumns.length === 0) {
+      errors.push('There must be at least one pk column');
     }
-    return value;
+    if (this.editableColumns.length === 0) {
+      errors.push('There must be at least one editable column');
+    }
+
+    if (pkAiCount > 1) {
+      errors.push('There can be only one pk with autoincrement');
+    }
+
+    if (errors.length) {
+      throw new RepositoryCreationError(errors);
+    }
   }
 
   protected makeModel(row: any): Model {
-    if (row == null) {
-      return null;
-    }
-
     const model = new this.modelType() as any;
-    this.columns.forEach(column => model[column] = this.convertFromDb(row[column]));
-    if (this.hasTimestamps) {
-      model.createdAt = this.convertFromDb(row.createdAt);
-      model.updatedAt = this.convertFromDb(row.updatedAt);
-    }
+    this.columns.forEach(column => model[column.name] = column.convertFromDatabase(row[column.name]));
     return model;
   }
 
-  // protected getPkArguments(model: Model): string[] {
-  //   return this.pkColumns.reduce<string[]>((prev, column, i) => {
-  //     prev.push(model[column]);
-  //     return prev;
-  //   }, []);
-  // }
+  getPkAndCondition(): string {
+    return this.pkColumns
+      .map(column => `${column.name} = ?`)
+      .join(' AND ');
+  }
+
+  getInsertColumnNamesText(): string {
+    return this.editableColumns
+      .map(column => column.name)
+      .join(', ');
+  }
+
+  getInsertQuestionMarks(): string {
+    return this.editableColumns
+      .map(_ => '?')
+      .join(', ');
+  }
+
+  getInsertArguments(model: Model): any[] {
+    const now = new Date();
+    return this.editableColumns.map(column => {
+      if (column.isCreateTimestamp || column.isUpdateTimestamp) {
+        return column.convertToDatabase(now);
+      }
+      return column.convertToDatabase((model as any)[column.name]);
+    });
+  }
+
+  getPkValues(model: Model): PkValues {
+    const pkValues: PkValues = {};
+    this.pkColumns.forEach(column => pkValues[column.name] = (model as any)[column.name]);
+    return pkValues;
+  }
 
   async find(): Promise<Model[]> {
     const sql = `SELECT * FROM ${this.table};`;
 
     try {
       const {rows} = await runSql(this.database, sql);
-      // console.info('All books selected');
-
-      return rows.map(row => this.makeModel(row));
+      const models: Model[] = [];
+      for (let i = 0; i < rows.length; i++) {
+        models.push(this.makeModel(rows.item(i)));
+      }
+      return models;
     } catch (error) {
       console.error(`[SQL Error] find on table ${this.table}`,
         '\nStatement:', sql,
         '\nArguments:', [],
         '\nError:', error);
     }
+    throw new Error();
   }
 
-  async findById(pk: number | PkValues): Promise<Model> {
-    if (typeof pk === 'number') {
-      pk = {[this.pkColumns[0]]: pk};
+  getPkArguments(pk: PkValues): any[] {
+    const pkCount = Object.getOwnPropertyNames(pk).length;
+    if (pkCount !== this.pkColumns.length) {
+      throw new Error(`FindById: table ${this.table} has ${this.pkColumns.length} pks, got ${pkCount}`);
     }
-    const ids = this.pkColumns.map(column => pk[column]) as number[];
+    return this.pkColumns.map(column => pk[column.name]);
+  }
+
+  async findById(pk: any): Promise<Model | null> {
+    if (isValidValue(pk)) {
+      pk = {[this.pkColumns[0].name]: pk};
+    }
+
     const sql = `SELECT * FROM ${this.table} WHERE ${this.getPkAndCondition()};`;
-    const args = ids;
+    const args = this.getPkArguments(pk);
 
     try {
       const {rows} = await runSql(this.database, sql, args);
-      // console.info('Book selected');
       return this.makeModel(rows[0]);
     } catch (error) {
       console.error(`[SQL Error] findById on table ${this.table}`,
         '\nStatement:', sql,
         '\nArguments:', args,
         '\nError:', error);
+      throw new Error();
     }
   }
 
-  async create(model: Model): Promise<Model> {
+  async create(model: Model): Promise<Model | null> {
     if (!model) {
       return null;
     }
-
-    const sql = `INSERT INTO ${this.table}(${this.getEditableColumns('create').join(', ')}) VALUES(${this.getEditableQuestionMarks('create').join(', ')});`;
-    const args = this.getEditableArguments(model, 'create');
+    const sql = `INSERT INTO ${this.table}(${this.getInsertColumnNamesText()}) VALUES(${this.getInsertQuestionMarks()});`;
+    const args = this.getInsertArguments(model);
 
     try {
       const {insertId} = await runSql(this.database, sql, args);
-      return await this.findById(insertId);
+      if (this.hasPkWithAutoincrement) {
+        return await this.findById(insertId);
+      }
+      return await this.findById(this.getPkValues(model));
     } catch (error) {
       console.error(`[SQL Error] create on table ${this.table}`,
         '\nStatement:', sql,
         '\nArguments:', args,
         '\nError:', error);
+      throw new Error();
     }
   }
 
-  async update(model: Model): Promise<Model> {
+  protected getUpdateSetText(): string {
+    return this.editableColumns
+      .map(column => `${column.name} = ?`)
+      .join(', ');
+  }
+
+  getUpdateArguments(model: Model): any[] {
+    const columns = this.editableColumns.concat(this.pkColumns);
+    return columns.map(column => {
+      if (column.isUpdateTimestamp) {
+        return column.convertToDatabase(new Date());
+      }
+      return column.convertToDatabase((model as any)[column.name]);
+    });
+  }
+
+  getDeleteArguments(model: Model): any[] {
+    return this.pkColumns.map(column => {
+      return column.convertToDatabase((model as any)[column.name]);
+    });
+  }
+
+  async update(model: Model): Promise<Model | null> {
     if (!model) {
       return null;
     }
 
     const sql = `UPDATE ${this.table} SET ${this.getUpdateSetText()} WHERE ${this.getPkAndCondition()};`;
-    const args = [...this.getEditableArguments(model, 'update'), ...this.getPkArguments(model)];
+    const args = this.getUpdateArguments(model);
 
     try {
       await runSql(this.database, sql, args);
-      const pk: PkValues = {};
-      const pkArguments = this.getPkArguments(model);
-      this.pkColumns.forEach((column, i) => pk[column] = Number(pkArguments[i]));
-      return await this.findById(pk);
+      return await this.findById(this.getPkValues(model));
     } catch (error) {
       console.error(`[SQL Error] update on table ${this.table}`,
         '\nStatement:', sql,
         '\nArguments:', args,
         '\nError:', error);
+      throw new Error();
     }
   }
 
@@ -185,19 +222,18 @@ export class Repository<Model> {
     if (!model) {
       return false;
     }
-    const sql = `DELETE FROM ${this.table} WHERE( ${this.getPkAndCondition()};`;
-    const args = this.getPkArguments(model);
+    const sql = `DELETE FROM ${this.table} WHERE ${this.getPkAndCondition()};`;
+    const args = this.getDeleteArguments(model);
 
     try {
       const result = await runSql(this.database, sql, args);
       return !!result.rowsAffected;
-      // console.info('Book deleted');
     } catch (error) {
       console.error(`[SQL Error] delete on table ${this.table}`,
         '\nStatement:', sql,
         '\nArguments:', args,
         '\nError:', error);
+      throw new Error();
     }
   }
 }
-
