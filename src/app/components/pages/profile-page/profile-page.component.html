@@ -2,20 +2,30 @@
   <app-main-layout>
     <div class="d-flex justify-content-between align-items-center mt-3">
       <span class="display-4 text-primary">{{user?.username}}</span>
-      <ng-container *ngIf="!isAuthUser; then followButton else editButton"></ng-container>
-      <ng-template #followButton>
-        <div role="button"
-             class="btn btn-{{isFollowing ? 'outline-danger' : 'success'}} rounded-pill"
-             (click)="isFollowing ? onUnfollow() : onFollow()">
-          <span class="">{{isFollowing ? 'unfollow' : 'follow'}}</span>
-        </div>
+      <ng-container *ngIf="!isAuthUser; then followTemplate else editButton"></ng-container>
+      <ng-template #followTemplate>
+        <ng-container *ngIf="!isFollowing; then followButton else unfollowButton"></ng-container>
+        <ng-template #followButton>
+          <div role="button"
+               class="btn btn-success rounded-pill"
+               (click)="onFollow()">
+            <span class="">follow</span>
+          </div>
+        </ng-template>
+        <ng-template #unfollowButton>
+          <div role="button"
+               class="btn btn-danger rounded-pill"
+               (click)="onUnfollow()">
+            <span class="">unfollow</span>
+          </div>
+        </ng-template>
       </ng-template>
       <ng-template #editButton>
         <div>
           <div role="button"
                class="btn btn-outline-primary rounded-pill"
                (click)="onEdit()">
-            <span class="">edit profile</span>
+            <span class="">edit</span>
           </div>
           <div role="button"
                class="btn btn-outline-danger rounded-pill ms-2"
