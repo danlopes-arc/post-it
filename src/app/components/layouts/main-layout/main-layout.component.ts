@@ -1,14 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {User} from '../../../models/User';
 import {Router} from '@angular/router';
 import {AuthService} from '../../../services/auth.service';
-import {User} from '../../../models/User';
 
 @Component({
-  selector: 'app-guest-layout',
-  templateUrl: './guest-layout.component.html',
-  styleUrls: ['./guest-layout.component.css']
+  selector: 'app-main-layout',
+  templateUrl: './main-layout.component.html',
+  styleUrls: ['./main-layout.component.css']
 })
-export class GuestLayoutComponent implements OnInit {
+export class MainLayoutComponent implements OnInit {
 
   user: User | null = null;
 

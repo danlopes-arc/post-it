@@ -9,8 +9,6 @@ import { RegisterPageComponent } from './components/pages/register-page/register
 import {DatabaseService} from './services/database.service';
 import { AuthRouteComponent } from './components/routes/auth-route/auth-route.component';
 import { GuestRouteComponent } from './components/routes/guest-route/guest-route.component';
-import { AuthLayoutComponent } from './components/layouts/auth-layout/auth-layout.component';
-import { GuestLayoutComponent } from './components/layouts/guest-layout/guest-layout.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { CompassSvgComponent } from './components/svgs/compass-svg/compass-svg.component';
 import { PostsSvgComponent } from './components/svgs/posts-svg/posts-svg.component';
@@ -19,6 +17,7 @@ import { AvatarSvgComponent } from './components/svgs/avatar-svg/avatar-svg.comp
 import { ExplorePageComponent } from './components/pages/explore-page/explore-page.component';
 import { FollowingPageComponent } from './components/pages/following-page/following-page.component';
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
+import { MainLayoutComponent } from './components/layouts/main-layout/main-layout.component';
 
 @NgModule({
   declarations: [
@@ -28,15 +27,14 @@ import { HomePageComponent } from './components/pages/home-page/home-page.compon
     RegisterPageComponent,
     AuthRouteComponent,
     GuestRouteComponent,
-    AuthLayoutComponent,
-    GuestLayoutComponent,
     CompassSvgComponent,
     PostsSvgComponent,
     PeopleSvgComponent,
     AvatarSvgComponent,
     ExplorePageComponent,
     FollowingPageComponent,
-    HomePageComponent
+    HomePageComponent,
+    MainLayoutComponent
   ],
   imports: [
     BrowserModule,
