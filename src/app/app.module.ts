@@ -18,6 +18,7 @@ import { PeopleSvgComponent } from './components/svgs/people-svg/people-svg.comp
 import { AvatarSvgComponent } from './components/svgs/avatar-svg/avatar-svg.component';
 import { ExplorePageComponent } from './components/pages/explore-page/explore-page.component';
 import { FollowingPageComponent } from './components/pages/following-page/following-page.component';
+import { HomePageComponent } from './components/pages/home-page/home-page.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { FollowingPageComponent } from './components/pages/following-page/follow
     PeopleSvgComponent,
     AvatarSvgComponent,
     ExplorePageComponent,
-    FollowingPageComponent
+    FollowingPageComponent,
+    HomePageComponent
   ],
   imports: [
     BrowserModule,

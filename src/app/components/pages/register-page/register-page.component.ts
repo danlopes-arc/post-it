@@ -57,7 +57,7 @@ export class RegisterPageComponent implements OnInit {
       user.username = username;
       await this.database.users.create(user);
       await this.auth.login(user.username);
-      await this.router.navigate(['']);
+      await this.router.navigate(['timeline']);
     }
 
     this.isLoading = false;

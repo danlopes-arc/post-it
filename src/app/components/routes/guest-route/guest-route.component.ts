@@ -13,7 +13,7 @@ export class GuestRouteComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     if (await this.auth.getUser()) {
-      this.router.navigate(['']);
+      this.router.navigate(['timeline']);
     }
   }
 

@@ -5,13 +5,15 @@ import {LoginPageComponent} from './components/pages/login-page/login-page.compo
 import {RegisterPageComponent} from './components/pages/register-page/register-page.component';
 import {ExplorePageComponent} from './components/pages/explore-page/explore-page.component';
 import {FollowingPageComponent} from './components/pages/following-page/following-page.component';
+import {HomePageComponent} from './components/pages/home-page/home-page.component';
 
 const routes: Routes = [
-  {path: '', component: TimelinePageComponent},
+  {path: '', component: HomePageComponent},
   {path: 'login', component: LoginPageComponent},
   {path: 'register', component: RegisterPageComponent},
   {path: 'explore', component: ExplorePageComponent},
   {path: 'following', component: FollowingPageComponent},
+  {path: 'timeline', component: TimelinePageComponent},
 ];
 
 @NgModule({

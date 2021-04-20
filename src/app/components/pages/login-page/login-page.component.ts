@@ -46,7 +46,7 @@ export class LoginPageComponent implements OnInit {
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     if (await this.auth.login(this.form.get('username')?.value.toLowerCase() ?? '')) {
-      await this.router.navigate(['']);
+      await this.router.navigate(['timeline']);
       return;
     }
 
