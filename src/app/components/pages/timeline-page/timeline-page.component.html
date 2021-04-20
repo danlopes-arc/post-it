@@ -1,27 +1,11 @@
 <app-auth-route>
   <app-main-layout>
-<!--    <div class="p-3">-->
-<!--    <div *ngFor="let user of users">-->
-<!--      <div class="card mb-3 bg-light">-->
-<!--        <div class="card-body">-->
-<!--          <div class="d-flex flex-column justify-content-between align-items-center">-->
-<!--            <span class="display-4 text-primary">{{user.username}}</span>-->
-<!--            <div class="d-flex">-->
-<!--              <span class="badge rounded-pill bg-secondary mt-2">5 posts</span>-->
-<!--            </div>-->
-<!--            <div class="mt-2 me-2 position-absolute top-0 end-0 btn btn-sm btn-outline-primary rounded-pill">-->
-<!--              <span class="">follow</span>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <hr class="mb-1">-->
-<!--          <div class="d-flex flex-column">-->
-<!--            <small class="text-muted">Last post 3 hours ago:</small>-->
-<!--            <h4 class="card-title">Special title treatment</h4>-->
-<!--            <span class="card-text text-muted text-truncate d-inline-block mw-100">With supporting text below as a natural lead-in to additional content.</span>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    </div>-->
+    <div class="pt-4">
+      <div *ngFor="let i of [1,2,3,4,5,6,7,8,9]">
+        <div class="mb-3">
+          <app-post-card></app-post-card>
+        </div>
+      </div>
+    </div>
   </app-main-layout>
 </app-auth-route>
