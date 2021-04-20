@@ -16,6 +16,8 @@ import { CompassSvgComponent } from './components/svgs/compass-svg/compass-svg.c
 import { PostsSvgComponent } from './components/svgs/posts-svg/posts-svg.component';
 import { PeopleSvgComponent } from './components/svgs/people-svg/people-svg.component';
 import { AvatarSvgComponent } from './components/svgs/avatar-svg/avatar-svg.component';
+import { ExplorePageComponent } from './components/pages/explore-page/explore-page.component';
+import { FollowingPageComponent } from './components/pages/following-page/following-page.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { AvatarSvgComponent } from './components/svgs/avatar-svg/avatar-svg.comp
     CompassSvgComponent,
     PostsSvgComponent,
     PeopleSvgComponent,
-    AvatarSvgComponent
+    AvatarSvgComponent,
+    ExplorePageComponent,
+    FollowingPageComponent
   ],
   imports: [
     BrowserModule,
