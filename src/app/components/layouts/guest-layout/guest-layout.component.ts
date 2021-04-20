@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {AuthService} from '../../../services/auth.service';
+import {User} from '../../../models/User';
 
 @Component({
   selector: 'app-guest-layout',
@@ -7,9 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GuestLayoutComponent implements OnInit {
 
-  constructor() { }
+  user: User | null = null;
 
-  ngOnInit(): void {
+  constructor(public router: Router, public auth: AuthService) {
+  }
+
+  async ngOnInit(): Promise<void> {
+    this.user = await this.auth.getUser();
   }
 
 }

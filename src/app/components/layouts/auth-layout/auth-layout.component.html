@@ -1,1 +1,21 @@
-<p>auth-layout works!</p>
+<app-guest-layout>
+  <div class="auth-layout-component">
+    <div class="container">
+      <ng-content></ng-content>
+    </div>
+    <div class="d-flex fixed-bottom p-3 shadow">
+      <div role="button" class="main-nav-link po flex-fill d-flex flex-column align-items-center">
+        <app-compass-svg height="40"></app-compass-svg>
+        <span class="fs-6 fw-bold text-success ms-2">explore</span>
+      </div>
+      <div role="button" class="main-nav-link flex-fill d-flex flex-column align-items-center">
+        <app-posts-svg height="40"></app-posts-svg>
+        <span class="fs-6 fw-bold text-success ms-2">timeline</span>
+      </div>
+      <div role="button" class="main-nav-link flex-fill d-flex flex-column align-items-center">
+        <app-people-svg height="40"></app-people-svg>
+        <span class="fs-6 fw-bold text-success ms-2">following</span>
+      </div>
+    </div>
+  </div>
+</app-guest-layout>
