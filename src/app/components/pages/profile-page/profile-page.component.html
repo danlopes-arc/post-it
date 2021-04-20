@@ -1,0 +1,33 @@
+<app-auth-route>
+  <app-main-layout>
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <span class="display-4 text-primary">{{user?.username}}</span>
+      <ng-container *ngIf="!isAuthUser; then followButton else editButton"></ng-container>
+      <ng-template #followButton>
+        <div role="button"
+             class="btn btn-{{isFollowing ? 'outline-danger' : 'success'}} rounded-pill"
+             (click)="isFollowing ? onFollow() : onUnfollow()">
+          <span class="">{{isFollowing ? 'unfollow' : 'follow'}}</span>
+        </div>
+      </ng-template>
+      <ng-template #editButton>
+        <div role="button"
+             class="btn btn-outline-primary rounded-pill"
+             (click)="onFollow()">
+          <span class="">edit profile</span>
+        </div>
+      </ng-template>
+    </div>
+    <hr class="mb-1">
+    <div class="d-flex justify-content-center">
+      <span class="badge rounded-pill bg-secondary mt-2">5 posts</span>
+    </div>
+    <div class="mt-2">
+      <div *ngFor="let i of [1,2,3,4,5,6,7,8,9]">
+        <div class="mb-3">
+          <app-post-card></app-post-card>
+        </div>
+      </div>
+    </div>
+  </app-main-layout>
+</app-auth-route>

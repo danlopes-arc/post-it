@@ -7,6 +7,7 @@ import {ExplorePageComponent} from './components/pages/explore-page/explore-page
 import {FollowingPageComponent} from './components/pages/following-page/following-page.component';
 import {HomePageComponent} from './components/pages/home-page/home-page.component';
 import {AboutPageComponent} from './components/pages/about-page/about-page.component';
+import {ProfilePageComponent} from './components/pages/profile-page/profile-page.component';
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'following', component: FollowingPageComponent},
   {path: 'timeline', component: TimelinePageComponent},
   {path: 'about', component: AboutPageComponent},
+  {path: 'profile', component: ProfilePageComponent},
 ];
 
 @NgModule({

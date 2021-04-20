@@ -20,6 +20,8 @@ import { HomePageComponent } from './components/pages/home-page/home-page.compon
 import { MainLayoutComponent } from './components/layouts/main-layout/main-layout.component';
 import { AboutPageComponent } from './components/pages/about-page/about-page.component';
 import { UserCardComponent } from './components/parts/user-card/user-card.component';
+import { PostCardComponent } from './components/parts/post-card/post-card.component';
+import { ProfilePageComponent } from './components/pages/profile-page/profile-page.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { UserCardComponent } from './components/parts/user-card/user-card.compon
     HomePageComponent,
     MainLayoutComponent,
     AboutPageComponent,
-    UserCardComponent
+    UserCardComponent,
+    PostCardComponent,
+    ProfilePageComponent
   ],
   imports: [
     BrowserModule,
