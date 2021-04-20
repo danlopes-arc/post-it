@@ -12,6 +12,8 @@ import {AuthService} from '../../../services/auth.service';
 export class ExplorePageComponent implements OnInit {
 
   users: User[] = [];
+  following: User[] = [];
+  authUser: User | null = null;
 
   constructor(
     public router: Router,
@@ -25,10 +27,25 @@ export class ExplorePageComponent implements OnInit {
   }
 
   private async loadUsers(): Promise<void> {
-    const user = await this.auth.getUser();
-    if (user) {
-      this.users = await this.database.users.getNonFollowed(user);
+    this.authUser = await this.auth.getUser();
+    if (this.authUser) {
+      this.users = await this.database.users.getNonFollowed(this.authUser);
     }
   }
 
+  async onFollow(user: User): Promise<void> {
+    if (!this.authUser) {
+      return;
+    }
+    await this.database.users.addFollower(this.authUser, user);
+    this.following.push(user);
+  }
+
+  async onUnfollow(user: User): Promise<void> {
+    if (!this.authUser) {
+      return;
+    }
+    await this.database.users.removeFollower(this.authUser, user);
+    this.following.splice(this.following.indexOf(user, 1));
+  }
 }

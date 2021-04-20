@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {User} from '../../../models/User';
+import {Router} from '@angular/router';
+import {DatabaseService} from '../../../services/database.service';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-following-page',
@@ -7,9 +11,42 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FollowingPageComponent implements OnInit {
 
-  constructor() { }
+  users: User[] = [];
+  notFollowing: User[] = [];
+  authUser: User | null = null;
+
+  constructor(
+    public router: Router,
+    private database: DatabaseService,
+    private auth: AuthService
+  ) {
+  }
 
   ngOnInit(): void {
+    this.loadUsers();
+  }
+
+  private async loadUsers(): Promise<void> {
+    this.authUser = await this.auth.getUser();
+    if (this.authUser) {
+      this.users = await this.database.users.getFollowed(this.authUser);
+    }
+  }
+
+  async onFollow(user: User): Promise<void> {
+    if (!this.authUser) {
+      return;
+    }
+    await this.database.users.addFollower(this.authUser, user);
+    this.notFollowing.splice(this.notFollowing.indexOf(user, 1));
+  }
+
+  async onUnfollow(user: User): Promise<void> {
+    if (!this.authUser) {
+      return;
+    }
+    await this.database.users.removeFollower(this.authUser, user);
+    this.notFollowing.push(user);
   }
 
 }
