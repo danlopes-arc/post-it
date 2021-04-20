@@ -19,6 +19,7 @@ import { FollowingPageComponent } from './components/pages/following-page/follow
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
 import { MainLayoutComponent } from './components/layouts/main-layout/main-layout.component';
 import { AboutPageComponent } from './components/pages/about-page/about-page.component';
+import { UserCardComponent } from './components/parts/user-card/user-card.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { AboutPageComponent } from './components/pages/about-page/about-page.com
     FollowingPageComponent,
     HomePageComponent,
     MainLayoutComponent,
-    AboutPageComponent
+    AboutPageComponent,
+    UserCardComponent
   ],
   imports: [
     BrowserModule,
