@@ -67,6 +67,33 @@ WHERE id IN
     throw new Error();
   }
 
+  async getNonFollowed(user: User): Promise<User[]> {
+    const sql = `
+SELECT * FROM users
+WHERE id != ? AND id NOT IN
+(
+    SELECT followedId FROM followers
+    WHERE followerId = ?
+);`;
+
+    const args = [user.id, user.id];
+
+    try {
+      const {rows} = await runSql(this.database, sql, args);
+      const users: User[] = [];
+      for (let i = 0; i < rows.length; i++) {
+        users.push(this.makeModel(rows.item(i)));
+      }
+      return users;
+    } catch (error) {
+      console.error(`[SQL Error] getNonFollowed on table ${this.table}`,
+        '\nStatement:', sql,
+        '\nArguments:', [],
+        '\nError:', error);
+    }
+    throw new Error();
+  }
+
   async addFollower(follower: User, followed: User): Promise<boolean> {
     const sql = `
 INSERT INTO followers(followerId, followedId, createdAt, updatedAt)
