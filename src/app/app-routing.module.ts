@@ -18,6 +18,7 @@ const routes: Routes = [
   {path: 'timeline', component: TimelinePageComponent},
   {path: 'about', component: AboutPageComponent},
   {path: 'profile', component: ProfilePageComponent},
+  {path: 'users/:id', component: ProfilePageComponent},
 ];
 
 @NgModule({

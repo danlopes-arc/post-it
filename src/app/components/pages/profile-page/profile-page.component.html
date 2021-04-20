@@ -6,14 +6,14 @@
       <ng-template #followButton>
         <div role="button"
              class="btn btn-{{isFollowing ? 'outline-danger' : 'success'}} rounded-pill"
-             (click)="isFollowing ? onFollow() : onUnfollow()">
+             (click)="isFollowing ? onUnfollow() : onFollow()">
           <span class="">{{isFollowing ? 'unfollow' : 'follow'}}</span>
         </div>
       </ng-template>
       <ng-template #editButton>
         <div role="button"
              class="btn btn-outline-primary rounded-pill"
-             (click)="onFollow()">
+             (click)="onEdit()">
           <span class="">edit profile</span>
         </div>
       </ng-template>
