@@ -7,7 +7,7 @@
     <span role="button" class="fs-5 fw-bold text-muted" (click)="router.navigate(['about'])">about</span>
     <ng-container *ngIf="user">
       <button (click)="onLogout()" class="btn btn-sm btn-primary rounded-pill ms-3 px-3 d-flex align-items-center justify-content-center">
-        <app-avatar-svg height="15"></app-avatar-svg>
+        <app-avatar-svg height="15" [color]="'#FFF'"></app-avatar-svg>
         <span class="fs-5 fw-bold ms-2">{{user.username}}</span>
       </button>
     </ng-container>
@@ -21,20 +21,20 @@
     <div role="button"
          class="main-nav-link po flex-fill d-flex flex-column align-items-center"
          (click)="router.navigate(['explore'])">
-      <app-compass-svg height="40"></app-compass-svg>
-      <span class="fs-6 fw-bold text-success ms-2">explore</span>
+      <app-compass-svg height="40" [color]="router.url === '/explore' ? '#0d6efd' : '#6c757d'"></app-compass-svg>
+      <span class="text-{{router.url === '/explore' ?'primary' : 'secondary'}} fs-6 fw-bold ms-2">explore</span>
     </div>
     <div role="button"
          class="main-nav-link flex-fill d-flex flex-column align-items-center"
          (click)="router.navigate(['timeline'])">
-      <app-posts-svg height="40"></app-posts-svg>
-      <span class="fs-6 fw-bold text-success ms-2">timeline</span>
+      <app-posts-svg height="40" [color]="router.url === '/timeline' ? '#0d6efd' : '#6c757d'"></app-posts-svg>
+      <span class="text-{{router.url === '/timeline' ?'primary' : 'secondary'}} fs-6 fw-bold ms-2">timeline</span>
     </div>
     <div role="button"
          class="main-nav-link flex-fill d-flex flex-column align-items-center"
          (click)="router.navigate(['following'])">
-      <app-people-svg height="40"></app-people-svg>
-      <span class="fs-6 fw-bold text-success ms-2">following</span>
+      <app-people-svg height="40" [color]="router.url === '/following' ? '#0d6efd' : '#6c757d'"></app-people-svg>
+      <span class="text-{{router.url === '/following' ?'primary' : 'secondary'}} fs-6 fw-bold ms-2">following</span>
     </div>
   </div>
 </ng-container>

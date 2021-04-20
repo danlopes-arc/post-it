@@ -12,7 +12,8 @@ export class MainLayoutComponent implements OnInit {
 
   user: User | null = null;
 
-  constructor(public router: Router, public auth: AuthService) {
+  constructor(public router: Router,
+              public auth: AuthService) {
   }
 
   async ngOnInit(): Promise<void> {
