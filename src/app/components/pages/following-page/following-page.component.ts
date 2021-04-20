@@ -33,7 +33,7 @@ export class FollowingPageComponent implements OnInit {
     }
   }
 
-  async onFollow(user: User): Promise<void> {
+  onFollow = async (user: User): Promise<void> => {
     if (!this.authUser) {
       return;
     }
@@ -41,7 +41,7 @@ export class FollowingPageComponent implements OnInit {
     this.notFollowing.splice(this.notFollowing.indexOf(user, 1));
   }
 
-  async onUnfollow(user: User): Promise<void> {
+  onUnfollow = async (user: User): Promise<void> => {
     if (!this.authUser) {
       return;
     }
