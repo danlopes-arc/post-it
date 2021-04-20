@@ -46,6 +46,6 @@ export class ExplorePageComponent implements OnInit {
       return;
     }
     await this.database.users.removeFollower(this.authUser, user);
-    this.following.splice(this.following.indexOf(user, 1));
+    this.following.splice(this.following.indexOf(user), 1);
   }
 }

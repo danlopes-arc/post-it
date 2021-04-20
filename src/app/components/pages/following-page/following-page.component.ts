@@ -38,7 +38,8 @@ export class FollowingPageComponent implements OnInit {
       return;
     }
     await this.database.users.addFollower(this.authUser, user);
-    this.notFollowing.splice(this.notFollowing.indexOf(user, 1));
+    console.log();
+    this.notFollowing.splice(this.notFollowing.indexOf(user), 1);
   }
 
   onUnfollow = async (user: User): Promise<void> => {
