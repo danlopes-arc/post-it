@@ -7,7 +7,7 @@
     <div class="d-flex align-items-center">
       <span role="button" class="fs-5 fw-bold text-muted" (click)="router.navigate(['about'])">about</span>
       <ng-container *ngIf="user">
-        <button (click)="onLogout()"
+        <button (click)="router.navigate(['profile'])"
                 class="btn btn-sm btn-primary rounded-pill ms-3 px-3 d-flex align-items-center justify-content-center">
           <app-avatar-svg height="15" [color]="'#FFF'"></app-avatar-svg>
           <span class="fs-5 fw-bold ms-2">{{user.username}}</span>

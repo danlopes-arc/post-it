@@ -72,4 +72,9 @@ export class ProfilePageComponent implements OnInit {
   onEdit = async (): Promise<void> => {
     console.log('edit');
   }
+
+  async onLogout(): Promise<void> {
+    await this.auth.logout();
+    await this.router.navigate(['']);
+  }
 }

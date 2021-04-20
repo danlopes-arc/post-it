@@ -11,10 +11,17 @@
         </div>
       </ng-template>
       <ng-template #editButton>
-        <div role="button"
-             class="btn btn-outline-primary rounded-pill"
-             (click)="onEdit()">
-          <span class="">edit profile</span>
+        <div>
+          <div role="button"
+               class="btn btn-outline-primary rounded-pill"
+               (click)="onEdit()">
+            <span class="">edit profile</span>
+          </div>
+          <div role="button"
+               class="btn btn-outline-danger rounded-pill ms-2"
+               (click)="onLogout()">
+            <span class="">logout</span>
+          </div>
         </div>
       </ng-template>
     </div>

@@ -19,10 +19,4 @@ export class MainLayoutComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.user = await this.auth.getUser();
   }
-
-  async onLogout(): Promise<void> {
-    await this.auth.logout();
-    this.user = null;
-    await this.router.navigate(['']);
-  }
 }
