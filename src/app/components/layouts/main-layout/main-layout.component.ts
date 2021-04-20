@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from '../../../models/User';
 import {Router} from '@angular/router';
 import {AuthService} from '../../../services/auth.service';
@@ -19,4 +19,9 @@ export class MainLayoutComponent implements OnInit {
     this.user = await this.auth.getUser();
   }
 
+  async onLogout(): Promise<void> {
+    await this.auth.logout();
+    this.user = null;
+    await this.router.navigate(['']);
+  }
 }

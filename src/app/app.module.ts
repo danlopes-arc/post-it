@@ -18,6 +18,7 @@ import { ExplorePageComponent } from './components/pages/explore-page/explore-pa
 import { FollowingPageComponent } from './components/pages/following-page/following-page.component';
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
 import { MainLayoutComponent } from './components/layouts/main-layout/main-layout.component';
+import { AboutPageComponent } from './components/pages/about-page/about-page.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MainLayoutComponent } from './components/layouts/main-layout/main-layou
     ExplorePageComponent,
     FollowingPageComponent,
     HomePageComponent,
-    MainLayoutComponent
+    MainLayoutComponent,
+    AboutPageComponent
   ],
   imports: [
     BrowserModule,
