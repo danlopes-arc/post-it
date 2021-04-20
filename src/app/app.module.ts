@@ -12,6 +12,10 @@ import { GuestRouteComponent } from './components/routes/guest-route/guest-route
 import { AuthLayoutComponent } from './components/layouts/auth-layout/auth-layout.component';
 import { GuestLayoutComponent } from './components/layouts/guest-layout/guest-layout.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import { CompassSvgComponent } from './components/svgs/compass-svg/compass-svg.component';
+import { PostsSvgComponent } from './components/svgs/posts-svg/posts-svg.component';
+import { PeopleSvgComponent } from './components/svgs/people-svg/people-svg.component';
+import { AvatarSvgComponent } from './components/svgs/avatar-svg/avatar-svg.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +26,11 @@ import {ReactiveFormsModule} from '@angular/forms';
     AuthRouteComponent,
     GuestRouteComponent,
     AuthLayoutComponent,
-    GuestLayoutComponent
+    GuestLayoutComponent,
+    CompassSvgComponent,
+    PostsSvgComponent,
+    PeopleSvgComponent,
+    AvatarSvgComponent
   ],
   imports: [
     BrowserModule,
