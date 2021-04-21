@@ -1,6 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {User} from '../../../models/User';
 import {Router} from '@angular/router';
+import {relativeTime} from 'human-date';
+import {Post} from '../../../models/Post';
+import {DatabaseService} from '../../../services/database.service';
 
 @Component({
   selector: 'app-user-card',
@@ -9,7 +12,12 @@ import {Router} from '@angular/router';
 })
 export class UserCardComponent implements OnInit {
 
-  constructor(public router: Router) {
+  relativeTime = relativeTime;
+  lastPost: Post | null = null;
+  postCount = 0;
+
+  constructor(public router: Router,
+              private database: DatabaseService) {
   }
 
   @Input() user: User | null = null;
@@ -20,7 +28,16 @@ export class UserCardComponent implements OnInit {
   @Input() onDo = (user: User) => null as any;
   @Input() onUndo = (user: User) => null as any;
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    if (!this.user) {
+      return;
+    }
+    const posts = await this.database.posts.getUserPosts(this.user);
+    this.postCount = posts.length;
+    if (!this.postCount) {
+      return;
+    }
+    this.lastPost = posts[posts.length - 1];
   }
 
 }

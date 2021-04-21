@@ -6,7 +6,9 @@
            class="d-flex flex-column align-items-center">
         <span class="display-4 text-primary">{{user?.username}}</span>
         <div class="d-flex">
-          <span class="badge rounded-pill bg-secondary mt-2">5 posts</span>
+          <span class="badge rounded-pill bg-secondary mt-2">
+            {{postCount}} {{postCount === 1 ? 'post' : 'posts'}}
+          </span>
         </div>
       </div>
       <ng-container *ngIf="!isUndoAction; then doButton else undoButton"></ng-container>
@@ -25,11 +27,14 @@
         </div>
       </ng-template>
     </div>
-    <hr class="mb-1">
-    <div class="d-flex flex-column">
-      <small class="text-muted">Last post 3 hours ago:</small>
-      <h4 class="card-title">Special title treatment</h4>
-      <span class="card-text text-muted text-truncate d-inline-block mw-100">With supporting text below as a natural lead-in to additional content.</span>
-    </div>
+    <ng-container *ngIf="lastPost">
+      <hr class="mb-1">
+      <div class="d-flex flex-column">
+        <small class="text-muted">Last post {{relativeTime(lastPost.createdAt)}}:</small>
+        <h4 class="card-title">{{lastPost.title}}</h4>
+        <span class="card-text text-muted text-truncate d-inline-block mw-100">
+          {{lastPost.body}}</span>
+      </div>
+    </ng-container>
   </div>
 </div>
