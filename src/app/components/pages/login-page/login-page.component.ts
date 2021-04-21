@@ -59,6 +59,18 @@ export class LoginPageComponent implements OnInit {
   }
 
   shouldDisableSubmit(): boolean {
-    return this.form.invalid && (this.isSubmitted || this.form.touched);
+    const keys = Object.getOwnPropertyNames(this.form.controls);
+    let isShowingErrors = false;
+    for (const key of keys) {
+      const control = this.form.get(key);
+      if (!control) {
+        continue;
+      }
+      if (control.invalid && control.touched) {
+        isShowingErrors = true;
+        break;
+      }
+    }
+    return this.form.invalid && (this.isSubmitted || isShowingErrors);
   }
 }
