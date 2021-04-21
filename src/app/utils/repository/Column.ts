@@ -57,14 +57,7 @@ export class Column {
       if (typeof value === 'string') {
         const matches = value.match(DatetimeIsoPattern);
         if (matches) {
-          const year = Number(matches[1]);
-          const month = Number(matches[2]);
-          const day = Number(matches[3]);
-          const hours = Number(matches[4]);
-          const minutes = Number(matches[5]);
-          const seconds = Number(matches[6]);
-          const milliseconds = Number(matches[8] ?? 0);
-          return new Date(year, month, day, hours, minutes, seconds, milliseconds);
+          return new Date(value);
         }
       }
     }
