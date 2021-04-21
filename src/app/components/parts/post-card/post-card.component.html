@@ -1,7 +1,8 @@
 <div class="card">
   <div class="card-body">
     <h5 class="card-title">{{post?.title}}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">by {{user?.username}} {{relativeTime(post?.createdAt)}}</h6>
+    <span class="card-subtitle text-muted">by <span class="fw-bold text-primary">{{user?.username}}</span> {{relativeTime(post?.createdAt)}}</span>
+    <hr>
     <p class="card-text">{{post?.body}}</p>
   </div>
 </div>
