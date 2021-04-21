@@ -21,23 +21,29 @@
     </div>
   </div>
   <ng-container *ngIf="user">
-    <div class="d-flex p-3 shadow-lg bg-light border-top">
+    <div class="d-flex p-3 shadow-lg bg-light border-top align-items-end">
       <div role="button"
            class="main-nav-link po flex-fill d-flex flex-column align-items-center"
            (click)="router.navigate(['explore'])">
-        <app-compass-svg height="40" [color]="router.url === '/explore' ? '#0d6efd' : '#6c757d'"></app-compass-svg>
+        <app-compass-svg height="25" [color]="router.url === '/explore' ? '#0d6efd' : '#6c757d'"></app-compass-svg>
         <span class="text-{{router.url === '/explore' ?'primary' : 'secondary'}} fs-6 fw-bold ms-2">explore</span>
       </div>
       <div role="button"
            class="main-nav-link flex-fill d-flex flex-column align-items-center"
            (click)="router.navigate(['timeline'])">
-        <app-posts-svg height="40" [color]="router.url === '/timeline' ? '#0d6efd' : '#6c757d'"></app-posts-svg>
+        <app-posts-svg height="25" [color]="router.url === '/timeline' ? '#0d6efd' : '#6c757d'"></app-posts-svg>
         <span class="text-{{router.url === '/timeline' ?'primary' : 'secondary'}} fs-6 fw-bold ms-2">timeline</span>
       </div>
       <div role="button"
            class="main-nav-link flex-fill d-flex flex-column align-items-center"
+           (click)="router.navigate(['timeline'])">
+        <app-new-post-svg height="25" [color]="router.url === '/posts/new' ? '#0d6efd' : '#6c757d'"></app-new-post-svg>
+        <span class="text-{{router.url === '/posts/new' ?'primary' : 'secondary'}} fs-6 fw-bold ms-2">new post</span>
+      </div>
+      <div role="button"
+           class="main-nav-link flex-fill d-flex flex-column align-items-center"
            (click)="router.navigate(['following'])">
-        <app-people-svg height="40" [color]="router.url === '/following' ? '#0d6efd' : '#6c757d'"></app-people-svg>
+        <app-people-svg height="25" [color]="router.url === '/following' ? '#0d6efd' : '#6c757d'"></app-people-svg>
         <span class="text-{{router.url === '/following' ?'primary' : 'secondary'}} fs-6 fw-bold ms-2">following</span>
       </div>
     </div>
