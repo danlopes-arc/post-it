@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {User} from '../../../models/User';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-user-card',
@@ -8,7 +9,7 @@ import {User} from '../../../models/User';
 })
 export class UserCardComponent implements OnInit {
 
-  constructor() {
+  constructor(public router: Router) {
   }
 
   @Input() user: User | null = null;
