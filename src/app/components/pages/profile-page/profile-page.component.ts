@@ -33,6 +33,7 @@ export class ProfilePageComponent implements OnInit {
       return;
     }
     this.posts = await this.database.posts.getUserPosts(this.user);
+    this.posts.sort((p1, p2) => +p2.createdAt - +p1.createdAt);
   }
 
   private async loadUser(): Promise<void> {
