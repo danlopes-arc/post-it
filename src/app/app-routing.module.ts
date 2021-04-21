@@ -9,6 +9,7 @@ import {HomePageComponent} from './components/pages/home-page/home-page.componen
 import {AboutPageComponent} from './components/pages/about-page/about-page.component';
 import {ProfilePageComponent} from './components/pages/profile-page/profile-page.component';
 import {EditProfilePageComponent} from './components/pages/edit-profile-page/edit-profile-page.component';
+import {NewPostPageComponent} from './components/pages/new-post-page/new-post-page.component';
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path: 'profile', component: ProfilePageComponent},
   {path: 'profile/edit', component: EditProfilePageComponent},
   {path: 'users/:id', component: ProfilePageComponent},
+  {path: 'posts/new', component: NewPostPageComponent},
 ];
 
 @NgModule({
