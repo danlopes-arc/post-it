@@ -1,7 +1,13 @@
 <div class="card">
   <div class="card-body">
     <h5 class="card-title">{{post?.title}}</h5>
-    <span class="card-subtitle text-muted">by <span class="fw-bold text-primary">{{user?.username}}</span> {{relativeTime(post?.createdAt)}}</span>
+    <span class="card-subtitle text-muted">
+      by
+      <span role="button"
+            (click)="router.navigate(['users', user?.id])"
+            class="fw-bold text-primary">
+      {{user?.username}}</span> {{relativeTime(post?.createdAt)}}
+    </span>
     <hr>
     <p class="card-text">{{post?.body}}</p>
   </div>
