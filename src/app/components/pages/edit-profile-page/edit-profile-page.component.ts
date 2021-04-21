@@ -39,6 +39,7 @@ export class EditProfilePageComponent implements OnInit {
   private async loadUser(): Promise<void> {
     this.user = await this.auth.getUser();
     this.form.get('username')?.setValue(this.user?.username);
+    this.form.get('username')?.markAsTouched();
   }
 
   getErrors(controlName: string): string[] {
