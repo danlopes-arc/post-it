@@ -2,6 +2,7 @@ import {Repository} from './Repository';
 import {User} from '../../models/User';
 import {Column} from './Column';
 import {runSql} from '../sql';
+import {Post} from '../../models/Post';
 
 export class UserRepository extends Repository<User> {
   constructor(database: Database) {
@@ -134,4 +135,9 @@ VALUES(?, ?, ?, ?);`;
     }
     throw new Error();
   }
+
+  async getPostUser(post: Post): Promise<User | null> {
+    return await this.findById(post.userId);
+  }
+
 }
