@@ -65,7 +65,7 @@ export class EditProfilePageComponent implements OnInit {
       }
       this.user.username = username;
       await this.database.users.update(this.user);
-      // await this.auth.login(user.username);
+      await this.auth.login(this.user.username);
       await this.router.navigate(['profile']);
     }
 
