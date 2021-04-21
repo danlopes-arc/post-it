@@ -42,6 +42,35 @@ export class Column {
 
   // public decimalPrecision: DecimalPrecision | null = null;
 
+
+  static convertToDatabase(value: any, datatype: typeof Datatype[number]): string {
+    if (datatype === 'datetime') {
+      if (value instanceof Date) {
+        return value.toISOString();
+      }
+    }
+    return value;
+  }
+
+  static convertFromDatabase(value: any, datatype: typeof Datatype[number]): any {
+    if (datatype === 'datetime') {
+      if (typeof value === 'string') {
+        const matches = value.match(DatetimeIsoPattern);
+        if (matches) {
+          const year = Number(matches[1]);
+          const month = Number(matches[2]);
+          const day = Number(matches[3]);
+          const hours = Number(matches[4]);
+          const minutes = Number(matches[5]);
+          const seconds = Number(matches[6]);
+          const milliseconds = Number(matches[8] ?? 0);
+          return new Date(year, month, day, hours, minutes, seconds, milliseconds);
+        }
+      }
+    }
+    return value;
+  }
+
   constructor(public name: string, public datatype: typeof Datatype[number]) {
     const errors = this.validate();
     if (errors) {
@@ -54,31 +83,37 @@ export class Column {
     this.validate();
     return this;
   }
+
   withAutoIncrement(): Column {
     this.isAutoIncrement = true;
     this.validate();
     return this;
   }
+
   withCreateTimestamp(): Column {
     this.isCreateTimestamp = true;
     this.validate();
     return this;
   }
+
   withUpdateTimestamp(): Column {
     this.isUpdateTimestamp = true;
     this.validate();
     return this;
   }
+
   withNullable(): Column {
     this.isNullable = true;
     this.validate();
     return this;
   }
+
   withUnique(): Column {
     this.isUnique = true;
     this.validate();
     return this;
   }
+
   withStringMaxLength(value: number): Column {
     this.stringMaxLength = value;
     this.validate();
@@ -169,32 +204,11 @@ export class Column {
     return errors.length ? errors : null;
   }
 
-
   convertToDatabase(value: any): string {
-    if (this.datatype === 'datetime') {
-      if (value instanceof Date) {
-        return value.toISOString();
-      }
-    }
-    return value;
+    return Column.convertToDatabase(value, this.datatype);
   }
 
   convertFromDatabase(value: any): any {
-    if (this.datatype === 'datetime') {
-      if (typeof value === 'string') {
-        const matches = value.match(DatetimeIsoPattern);
-        if (matches) {
-          const year = Number(matches[1]);
-          const month = Number(matches[2]);
-          const day = Number(matches[3]);
-          const hours = Number(matches[4]);
-          const minutes = Number(matches[5]);
-          const seconds = Number(matches[6]);
-          const milliseconds = Number(matches[8] ?? 0);
-          return new Date(year, month, day, hours, minutes, seconds, milliseconds);
-        }
-      }
-    }
-    return value;
+    return Column.convertFromDatabase(value, this.datatype);
   }
 }

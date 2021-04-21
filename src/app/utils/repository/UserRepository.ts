@@ -99,7 +99,12 @@ WHERE id != ? AND id NOT IN
 INSERT INTO followers(followerId, followedId, createdAt, updatedAt)
 VALUES(?, ?, ?, ?);`;
 
-    const args = [follower.id, followed.id, new Date(), new Date()];
+    const args = [
+      follower.id,
+      followed.id,
+      Column.convertToDatabase(new Date(), 'datetime'),
+      Column.convertToDatabase(new Date(), 'datetime')
+    ];
 
     try {
       await runSql(this.database, sql, args);
