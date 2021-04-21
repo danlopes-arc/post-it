@@ -22,6 +22,7 @@ import { AboutPageComponent } from './components/pages/about-page/about-page.com
 import { UserCardComponent } from './components/parts/user-card/user-card.component';
 import { PostCardComponent } from './components/parts/post-card/post-card.component';
 import { ProfilePageComponent } from './components/pages/profile-page/profile-page.component';
+import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { ProfilePageComponent } from './components/pages/profile-page/profile-pa
     AboutPageComponent,
     UserCardComponent,
     PostCardComponent,
-    ProfilePageComponent
+    ProfilePageComponent,
+    EditProfilePageComponent
   ],
   imports: [
     BrowserModule,
