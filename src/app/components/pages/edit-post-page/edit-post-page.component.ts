@@ -104,4 +104,12 @@ export class EditPostPageComponent implements OnInit {
     }
     return this.form.invalid && (this.isSubmitted || isShowingErrors);
   }
+
+  async onDelete(): Promise<void> {
+    if (!this.post) {
+      return;
+    }
+    await this.database.posts.delete(this.post);
+    await this.router.navigate(['timeline']);
+  }
 }
