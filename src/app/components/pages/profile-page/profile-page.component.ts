@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {DatabaseService} from '../../../services/database.service';
 import {AuthService} from '../../../services/auth.service';
 import {User} from '../../../models/User';
+import {Post} from '../../../models/Post';
 
 @Component({
   selector: 'app-profile-page',
@@ -15,6 +16,7 @@ export class ProfilePageComponent implements OnInit {
   authUser: User | null = null;
   isFollowing = false;
   isAuthUser = false;
+  posts: Post[] = [];
 
   constructor(public router: Router,
               private database: DatabaseService,
@@ -22,8 +24,15 @@ export class ProfilePageComponent implements OnInit {
               private activatedRoute: ActivatedRoute) {
   }
 
-  ngOnInit(): void {
-    this.loadUser();
+  async ngOnInit(): Promise<void> {
+    await this.loadUser();
+    await this.loadPosts();
+  }
+  private async loadPosts(): Promise<void> {
+    if (!this.user) {
+      return;
+    }
+    this.posts = await this.database.posts.getUserPosts(this.user);
   }
 
   private async loadUser(): Promise<void> {
@@ -77,4 +86,5 @@ export class ProfilePageComponent implements OnInit {
     await this.auth.logout();
     await this.router.navigate(['']);
   }
+
 }
