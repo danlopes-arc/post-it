@@ -10,6 +10,7 @@ import {AboutPageComponent} from './components/pages/about-page/about-page.compo
 import {ProfilePageComponent} from './components/pages/profile-page/profile-page.component';
 import {EditProfilePageComponent} from './components/pages/edit-profile-page/edit-profile-page.component';
 import {NewPostPageComponent} from './components/pages/new-post-page/new-post-page.component';
+import {EditPostPageComponent} from './components/pages/edit-post-page/edit-post-page.component';
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -23,6 +24,8 @@ const routes: Routes = [
   {path: 'profile/edit', component: EditProfilePageComponent},
   {path: 'users/:id', component: ProfilePageComponent},
   {path: 'posts/new', component: NewPostPageComponent},
+  {path: 'posts/:id', component: NewPostPageComponent},
+  {path: 'posts/:id/edit', component: EditPostPageComponent},
 ];
 
 @NgModule({

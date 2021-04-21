@@ -25,6 +25,7 @@ import { ProfilePageComponent } from './components/pages/profile-page/profile-pa
 import { EditProfilePageComponent } from './components/pages/edit-profile-page/edit-profile-page.component';
 import { NewPostSvgComponent } from './components/svgs/new-post-svg/new-post-svg.component';
 import { NewPostPageComponent } from './components/pages/new-post-page/new-post-page.component';
+import { EditPostPageComponent } from './components/pages/edit-post-page/edit-post-page.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { NewPostPageComponent } from './components/pages/new-post-page/new-post-
     ProfilePageComponent,
     EditProfilePageComponent,
     NewPostSvgComponent,
-    NewPostPageComponent
+    NewPostPageComponent,
+    EditPostPageComponent
   ],
   imports: [
     BrowserModule,
