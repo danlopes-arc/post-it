@@ -6,7 +6,7 @@ import {Comment} from '../../models/Comment';
 
 export class CommentRepository extends Repository<Comment> {
   constructor(database: Database) {
-    super(Comment, database, 'posts', [
+    super(Comment, database, 'comments', [
       new Column('id', 'integer').withPk().withAutoIncrement(),
       new Column('userId', 'integer'),
       new Column('postId', 'integer'),
