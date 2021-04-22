@@ -54,13 +54,4 @@ export class ViewPostPageComponent implements OnInit {
       }
     }
   }
-
-  getCommentator(comment: Comment): User | null {
-    for (const user of this.commentators) {
-      if (user.id === comment.userId) {
-        return user;
-      }
-    }
-    return null;
-  }
 }

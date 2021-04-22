@@ -29,6 +29,7 @@ import { EditPostPageComponent } from './components/pages/edit-post-page/edit-po
 import { ViewPostPageComponent } from './components/pages/view-post-page/view-post-page.component';
 import { NewCommentPageComponent } from './components/pages/new-comment-page/new-comment-page.component';
 import { EditCommentPageComponent } from './components/pages/edit-comment-page/edit-comment-page.component';
+import { CommentCardComponent } from './components/parts/comment-card/comment-card.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { EditCommentPageComponent } from './components/pages/edit-comment-page/e
     EditPostPageComponent,
     ViewPostPageComponent,
     NewCommentPageComponent,
-    EditCommentPageComponent
+    EditCommentPageComponent,
+    CommentCardComponent
   ],
   imports: [
     BrowserModule,
