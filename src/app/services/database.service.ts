@@ -45,6 +45,7 @@ export class DatabaseService {
     }
 
     await this.initializeDatabase();
+    await this.seed();
   }
 
   async initializeDatabase(): Promise<void> {
@@ -98,6 +99,13 @@ CREATE TABLE IF NOT EXISTS comments(
       }
     }
 
+    // ['daniela', 'omara', 'paula', 'ritoa', 'jose', 'cotios'].forEach(async n => {
+    //   const user = new User();
+    //   user.id = 0;
+    //   user.username = n;
+    //   console.log(await this.users.create(user));
+    // });
+
     // let count = 0;
     // for (let i = 0; i < 10; i++) {
     //   for (let j = 0; j < i; j++) {
@@ -116,12 +124,6 @@ CREATE TABLE IF NOT EXISTS comments(
     // console.log(await this.posts.create(post));
     // console.log(await this.posts.getUserPosts(await this.users.findById(1) ?? new User()));
     // console.log(await this.users.getPostUser(await this.posts.findById(1) ?? new Post()));
-    // ['daniela', 'omara', 'paula', 'ritoa', 'jose', 'cotios'].forEach(async n => {
-    //   const user = new User();
-    //   user.id = 0;
-    //   user.username = n;
-    //   console.log(await this.users.create(user));
-    // });
 
     // const user = await this.users.findById(2) ?? new User();
     // if (user) {
@@ -137,5 +139,25 @@ CREATE TABLE IF NOT EXISTS comments(
     //   await this.users.findById(2) ?? new User()
     // );
     // console.log(await this.users.getFollowers(user));
+  }
+
+  async seed(): Promise<void> {
+    const usernames = ['daniel', 'omar', 'paula', 'corato', 'meloga', 'ritoa', 'jose', 'cotios', 'julius', 'tiguan'];
+    for (const username of usernames) {
+      const user = new User();
+      user.id = 0;
+      user.username = username;
+      console.log(await this.users.create(user));
+    }
+
+    for (let i = 0; i < usernames.length; i++) {
+      for (let j = 0; j < i; j++) {
+        const post = new Post();
+        post.title = `${i * usernames.length + j} Hello from another planet! It's great here.`;
+        post.body = 'Just a moderately sizeable text so we have something to test against the app.';
+        post.userId = i + 1;
+        await this.posts.create(post);
+      }
+    }
   }
 }
