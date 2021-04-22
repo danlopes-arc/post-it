@@ -190,6 +190,9 @@ export class Repository<Model> {
   }
 
   async findById(pk: any): Promise<Model | null> {
+    if (pk == null) {
+      return null;
+    }
     if (isValidValue(pk)) {
       pk = {[this.pkColumns[0].name]: pk};
     }
