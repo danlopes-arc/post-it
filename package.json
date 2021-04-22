@@ -7,7 +7,10 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build:mobile": "ng build --prod --base-href ./ --output-path ./mobile/www",
+    "build:android": "npm run build:mobile && cd mobile && cordova build android",
+    "run:android": "npm run build:mobile && cd mobile && cordova run android"
   },
   "private": true,
   "dependencies": {
