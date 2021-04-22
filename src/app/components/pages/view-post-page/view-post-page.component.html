@@ -44,7 +44,7 @@
               {{getRelativeTime(comment.createdAt)}}
             </span>
             <div *ngIf="authUser.id === comment.userId" class="d-flex justify-content-center align-items-start">
-              <button class="btn btn-sm btn-outline-primary rounded-pill py-0">Edit</button>
+              <button (click)="router.navigate(['comments', comment?.id, 'edit'])" class="btn btn-sm btn-outline-primary rounded-pill py-0">Edit</button>
             </div>
           </div>
           <div class="card-body">

@@ -13,6 +13,7 @@ import {NewPostPageComponent} from './components/pages/new-post-page/new-post-pa
 import {EditPostPageComponent} from './components/pages/edit-post-page/edit-post-page.component';
 import {ViewPostPageComponent} from './components/pages/view-post-page/view-post-page.component';
 import {NewCommentPageComponent} from './components/pages/new-comment-page/new-comment-page.component';
+import {EditCommentPageComponent} from './components/pages/edit-comment-page/edit-comment-page.component';
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -29,6 +30,7 @@ const routes: Routes = [
   {path: 'posts/:id', component: ViewPostPageComponent},
   {path: 'posts/:id/edit', component: EditPostPageComponent},
   {path: 'posts/:postId/comments/new', component: NewCommentPageComponent},
+  {path: 'comments/:id/edit', component: EditCommentPageComponent},
 ];
 
 @NgModule({
