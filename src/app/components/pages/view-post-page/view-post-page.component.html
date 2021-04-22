@@ -5,8 +5,9 @@
         <div class="card-body">
           <div class="d-flex justify-content-between">
             <h1 class="card-title">{{post?.title}}</h1>
-            <div class="d-flex justify-content-center align-items-start">
-              <button class="btn btn-sm btn-outline-primary rounded-pill">Edit</button>
+            <div *ngIf="authUser?.id === user?.id" class="d-flex justify-content-center align-items-start">
+              <button (click)="router.navigate(['posts', post?.id, 'edit'])"
+                      class="btn btn-sm btn-outline-primary rounded-pill">Edit</button>
             </div>
           </div>
           <span class="card-subtitle text-muted">
