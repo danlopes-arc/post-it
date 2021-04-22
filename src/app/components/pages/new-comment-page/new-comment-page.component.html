@@ -1,0 +1,56 @@
+<app-auth-route>
+  <app-main-layout>
+    <div class="d-flex justify-content-center">
+      <div class="w-100">
+        <div class="d-flex justify-content-center">
+          <h1 class="my-5 display-1">New Comment</h1>
+        </div>
+        <form [formGroup]="form">
+          <fieldset [disabled]="isLoading">
+            <div class="form-floating mb-3">
+                <textarea class="form-control"
+                          style="height: 160px; border-radius: 1.8rem;"
+                          id="body"
+                          [class.is-invalid]="shouldShowErrorsForControl('body')"
+                          formControlName="body"
+                          autocomplete="off"></textarea>
+              <label class="bg-white text-muted p-0 pe-1 ms-2 rounded-pill mt-3 h-auto"
+                     for="body"
+                     style="opacity: 1">Body</label>
+              <ng-container *ngIf="shouldShowErrorsForControl('body')">
+                <ng-container *ngFor="let error of getErrors('body')">
+                  <div *ngIf="error == 'minlength'" class="invalid-feedback mx-3">
+                    The body must be at least 1 character long
+                  </div>
+                  <div *ngIf="error == 'maxlength'" class="invalid-feedback mx-3">
+                    The body must be at most 300 characters long
+                  </div>
+                  <div *ngIf="error == 'required'" class="invalid-feedback mx-3">
+                    The body is required
+                  </div>
+                </ng-container>
+              </ng-container>
+            </div>
+            <div class="d-flex justify-content-center">
+              <div class="d-flex flex-column justify-content-center">
+                <button [disabled]="shouldDisableSubmit()"
+                        class="btn btn-lg btn-primary rounded-pill d-flex align-items-center justify-content-center"
+                        id="continueButton"
+                        (click)="onSubmit()">
+                  Comment
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm text-light ms-2" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </span>
+                </button>
+                <button class="btn btn-sm btn-outline-primary rounded-pill mt-2"
+                        (click)="location.back()">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </app-main-layout>
+</app-auth-route>

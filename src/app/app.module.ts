@@ -27,6 +27,7 @@ import { NewPostSvgComponent } from './components/svgs/new-post-svg/new-post-svg
 import { NewPostPageComponent } from './components/pages/new-post-page/new-post-page.component';
 import { EditPostPageComponent } from './components/pages/edit-post-page/edit-post-page.component';
 import { ViewPostPageComponent } from './components/pages/view-post-page/view-post-page.component';
+import { NewCommentPageComponent } from './components/pages/new-comment-page/new-comment-page.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { ViewPostPageComponent } from './components/pages/view-post-page/view-po
     NewPostSvgComponent,
     NewPostPageComponent,
     EditPostPageComponent,
-    ViewPostPageComponent
+    ViewPostPageComponent,
+    NewCommentPageComponent
   ],
   imports: [
     BrowserModule,
