@@ -6,6 +6,8 @@ import {Column} from '../utils/repository/Column';
 import {UserRepository} from '../utils/repository/UserRepository';
 import {PostRepository} from '../utils/repository/PostRepository';
 import {Post} from '../models/Post';
+import {Comment} from '../models/Comment';
+import {CommentRepository} from '../utils/repository/CommentRepository';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +18,14 @@ export class DatabaseService {
 
   users: UserRepository;
   posts: PostRepository;
+  comments: CommentRepository;
 
   constructor() {
     this.database = window.openDatabase('PostIt', '1.0', 'Post It', 2 * 1024 * 1024);
 
     this.users = new UserRepository(this.database);
     this.posts = new PostRepository(this.database);
+    this.comments = new CommentRepository(this.database);
     // this.resetDatabase();
     this.initializeDatabase();
   }
@@ -99,6 +103,12 @@ CREATE TABLE IF NOT EXISTS comments(
       }
     }
 
+    // const comment = new Comment();
+    // comment.userId = 2;
+    // comment.postId = 1;
+    // comment.body = 'hello guys!';
+    // console.log(await this.comments.create(comment));
+
     // ['daniela', 'omara', 'paula', 'ritoa', 'jose', 'cotios'].forEach(async n => {
     //   const user = new User();
     //   user.id = 0;
@@ -147,13 +157,14 @@ CREATE TABLE IF NOT EXISTS comments(
       const user = new User();
       user.id = 0;
       user.username = username;
-      console.log(await this.users.create(user));
+      await this.users.create(user);
     }
 
+    let count = 0;
     for (let i = 0; i < usernames.length; i++) {
       for (let j = 0; j < i; j++) {
         const post = new Post();
-        post.title = `${i * usernames.length + j} Hello from another planet! It's great here.`;
+        post.title = `${++count} Hello from another planet! It's great here.`;
         post.body = 'Just a moderately sizeable text so we have something to test against the app.';
         post.userId = i + 1;
         await this.posts.create(post);

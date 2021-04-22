@@ -5,7 +5,7 @@
         <div class="card-body">
           <div class="d-flex justify-content-between">
             <h1 class="card-title">{{post?.title}}</h1>
-            <div *ngIf="authUser?.id === user?.id" class="d-flex justify-content-center align-items-start">
+            <div *ngIf="authUser?.id === postUser?.id" class="d-flex justify-content-center align-items-start">
               <button (click)="router.navigate(['posts', post?.id, 'edit'])"
                       class="btn btn-sm btn-outline-primary rounded-pill">Edit</button>
             </div>
@@ -13,9 +13,9 @@
           <span class="card-subtitle text-muted">
             by
             <span role="button"
-                  (click)="router.navigate(['users', user?.id])"
+                  (click)="router.navigate(['users', postUser?.id])"
                   class="fw-bold text-primary">
-            {{user?.username}}</span> {{relativeTime(post?.createdAt)}}
+            {{postUser?.username}}</span> {{relativeTime(post?.createdAt)}}
           </span>
           <hr>
           <p class="card-text">{{post?.body}}</p>
@@ -28,21 +28,22 @@
       </div>
       <div class="d-flex justify-content-center">
         <span class="badge rounded-pill bg-secondary my-2">
-          5 {{false ? 'comment' : 'comments'}}
+          {{postComments.length}}
+          {{postComments.length === 1 ? 'comment' : 'comments'}}
         </span>
       </div>
-      <ng-container *ngFor="let i of [1,2,3,4,5,6,7,8,9]">
+      <ng-container *ngFor="let comment of postComments">
         <div class="card mb-3">
           <div class="card-header d-flex justify-content-between align-items-center">
             <span class="card-subtitle text-muted">
               <span role="button"
-                    (click)="router.navigate(['users', user?.id])"
+                    (click)="router.navigate(['users', comment.userId])"
                     class="fw-bold text-primary">
-                {{user?.username}}
+                {{getCommentator(comment)?.username}}
               </span>
-              {{relativeTime(post?.createdAt)}}
+              {{relativeTime(comment.createdAt)}}
             </span>
-            <div class="d-flex justify-content-center align-items-start">
+            <div *ngIf="authUser.id === comment.userId" class="d-flex justify-content-center align-items-start">
               <button class="btn btn-sm btn-outline-primary rounded-pill py-0">Edit</button>
             </div>
           </div>
