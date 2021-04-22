@@ -15,7 +15,7 @@
             <span role="button"
                   (click)="router.navigate(['users', postUser?.id])"
                   class="fw-bold text-primary">
-            {{postUser?.username}}</span> {{relativeTime(post?.createdAt)}}
+            {{postUser?.username}}</span> {{getRelativeTime(post?.createdAt)}}
           </span>
           <hr>
           <p class="card-text">{{post?.body}}</p>
@@ -41,7 +41,7 @@
                     class="fw-bold text-primary">
                 {{getCommentator(comment)?.username}}
               </span>
-              {{relativeTime(comment.createdAt)}}
+              {{getRelativeTime(comment.createdAt)}}
             </span>
             <div *ngIf="authUser.id === comment.userId" class="d-flex justify-content-center align-items-start">
               <button class="btn btn-sm btn-outline-primary rounded-pill py-0">Edit</button>

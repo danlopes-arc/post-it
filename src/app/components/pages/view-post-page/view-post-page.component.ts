@@ -3,9 +3,9 @@ import {Post} from '../../../models/Post';
 import {User} from '../../../models/User';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DatabaseService} from '../../../services/database.service';
-import {relativeTime} from 'human-date';
 import {AuthService} from '../../../services/auth.service';
 import {Comment} from '../../../models/Comment';
+import {getRelativeTime} from '../../../utils/relativeTime';
 
 
 @Component({
@@ -16,7 +16,7 @@ import {Comment} from '../../../models/Comment';
 export class ViewPostPageComponent implements OnInit {
 
   post: Post | null = null;
-  relativeTime = relativeTime;
+  getRelativeTime = getRelativeTime;
   postUser: User | null = null;
   authUser: User | null = null;
   postComments: Comment[] = [];

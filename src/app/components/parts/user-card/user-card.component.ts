@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {User} from '../../../models/User';
 import {Router} from '@angular/router';
-import {relativeTime} from 'human-date';
 import {Post} from '../../../models/Post';
 import {DatabaseService} from '../../../services/database.service';
+import {getRelativeTime} from '../../../utils/relativeTime';
 
 @Component({
   selector: 'app-user-card',
@@ -12,7 +12,7 @@ import {DatabaseService} from '../../../services/database.service';
 })
 export class UserCardComponent implements OnInit {
 
-  relativeTime = relativeTime;
+  getRelativeTime = getRelativeTime;
   lastPost: Post | null = null;
   postCount = 0;
 

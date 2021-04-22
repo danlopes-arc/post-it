@@ -11,7 +11,7 @@
       <span role="button"
             (click)="router.navigate(['users', user?.id])"
             class="fw-bold text-primary">
-      {{user?.username}}</span> {{relativeTime(post?.createdAt)}}
+      {{user?.username}}</span> {{getRelativeTime(post?.createdAt)}}
     </span>
     <hr>
     <p
