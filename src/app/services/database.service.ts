@@ -28,6 +28,7 @@ export class DatabaseService {
 
   async resetDatabase(): Promise<void> {
     const statements = [
+      `DROP TABLE IF EXISTS comments;`,
       `DROP TABLE IF EXISTS posts;`,
       `DROP TABLE IF EXISTS followers;`,
       `DROP TABLE IF EXISTS users;`,
@@ -73,7 +74,17 @@ CREATE TABLE IF NOT EXISTS posts(
   longitude REAL,
   createdAt TEXT NOT NULL,
   updatedAt TEXT NOT NULL,
-  FOREIGN KEY(userId) REFERENCES user(id) ON DELETE CASCADE
+  FOREIGN KEY(userId) REFERENCES users(id) ON DELETE CASCADE
+);`, `
+CREATE TABLE IF NOT EXISTS comments(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  userId INTEGER NOT NULL,
+  postId INTEGER NOT NULL,
+  body TEXT NOT NULL,
+  createdAt TEXT NOT NULL,
+  updatedAt TEXT NOT NULL,
+  FOREIGN KEY(userId) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY(postId) REFERENCES posts(id) ON DELETE CASCADE
 );`
     ];
 
@@ -87,10 +98,11 @@ CREATE TABLE IF NOT EXISTS posts(
       }
     }
 
+    // let count = 0;
     // for (let i = 0; i < 10; i++) {
     //   for (let j = 0; j < i; j++) {
     //     const post = new Post();
-    //     post.title = i + ' Hello from another planet!';
+    //     post.title = count++ + ' Hello from another planet!';
     //     post.body = 'Just a moderately sizeable text so we have something to test against the app.';
     //     post.userId = i + 1;
     //     await this.posts.create(post);
