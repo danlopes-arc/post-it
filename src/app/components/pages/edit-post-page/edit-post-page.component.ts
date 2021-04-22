@@ -28,6 +28,7 @@ export class EditPostPageComponent implements OnInit {
   post: Post | null = null;
   isLoading = false;
   isSubmitted = false;
+  shouldDhowDeleteConfirmation = false;
 
   constructor(public router: Router,
               private auth: AuthService,
@@ -105,11 +106,15 @@ export class EditPostPageComponent implements OnInit {
     return this.form.invalid && (this.isSubmitted || isShowingErrors);
   }
 
-  async onDelete(): Promise<void> {
+  onDeleteConfirm = async (): Promise<void> => {
     if (!this.post) {
       return;
     }
     await this.database.posts.delete(this.post);
     await this.router.navigate(['timeline']);
+  }
+
+  onDeleteCancel = (): void => {
+    this.shouldDhowDeleteConfirmation = false;
   }
 }

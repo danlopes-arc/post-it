@@ -42,6 +42,10 @@
                   <span class="visually-hidden">Loading...</span>
                 </span>
                 </button>
+                <button class="btn btn-sm btn-outline-danger rounded-pill mt-2"
+                        (click)="shouldDhowDeleteConfirmation = true">
+                  Delete
+                </button>
                 <button class="btn btn-sm btn-outline-primary rounded-pill mt-2"
                         (click)="location.back()">
                   Cancel
@@ -52,5 +56,6 @@
         </form>
       </div>
     </div>
+    <app-modal *ngIf="shouldDhowDeleteConfirmation" [onOk]="onDeleteConfirm" [onCancel]="onDeleteCancel"></app-modal>
   </app-main-layout>
 </app-auth-route>

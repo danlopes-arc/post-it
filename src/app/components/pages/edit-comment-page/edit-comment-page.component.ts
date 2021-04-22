@@ -27,6 +27,7 @@ export class EditCommentPageComponent implements OnInit {
   isSubmitted = false;
   post: Post | null = null;
   comment: Comment | null = null;
+  shouldDhowDeleteConfirmation = false;
 
   constructor(
     public router: Router,
@@ -108,4 +109,15 @@ export class EditCommentPageComponent implements OnInit {
     return this.form.invalid && (this.isSubmitted || isShowingErrors);
   }
 
+  onDeleteConfirm = async (): Promise<void> => {
+    if (!this.comment) {
+      return;
+    }
+    await this.database.comments.delete(this.comment);
+    await this.router.navigate(['posts', this.comment.postId]);
+  }
+
+  onDeleteCancel = (): void => {
+    this.shouldDhowDeleteConfirmation = false;
+  }
 }

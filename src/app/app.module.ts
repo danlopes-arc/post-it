@@ -30,6 +30,7 @@ import { ViewPostPageComponent } from './components/pages/view-post-page/view-po
 import { NewCommentPageComponent } from './components/pages/new-comment-page/new-comment-page.component';
 import { EditCommentPageComponent } from './components/pages/edit-comment-page/edit-comment-page.component';
 import { CommentCardComponent } from './components/parts/comment-card/comment-card.component';
+import { ModalComponent } from './components/parts/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { CommentCardComponent } from './components/parts/comment-card/comment-ca
     ViewPostPageComponent,
     NewCommentPageComponent,
     EditCommentPageComponent,
-    CommentCardComponent
+    CommentCardComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
