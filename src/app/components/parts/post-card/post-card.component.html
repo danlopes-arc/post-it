@@ -1,6 +1,11 @@
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title">{{post?.title}}</h5>
+    <div role="button"
+         class="">
+      <h5
+        (click)="router.navigate(['posts', post?.id])"
+        class="card-title">{{post?.title}}</h5>
+    </div>
     <span class="card-subtitle text-muted">
       by
       <span role="button"
@@ -9,6 +14,9 @@
       {{user?.username}}</span> {{relativeTime(post?.createdAt)}}
     </span>
     <hr>
-    <p class="card-text">{{post?.body}}</p>
+    <p
+      role="button"
+      (click)="router.navigate(['posts', post?.id])"
+      class="card-text">{{post?.body}}</p>
   </div>
 </div>

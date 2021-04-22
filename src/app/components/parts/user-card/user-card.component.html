@@ -29,7 +29,9 @@
     </div>
     <ng-container *ngIf="lastPost">
       <hr class="mb-1">
-      <div class="d-flex flex-column">
+      <div class="d-flex flex-column"
+           role="button"
+      (click)="router.navigate(['posts', lastPost?.id])">
         <small class="text-muted mb-1">last post {{relativeTime(lastPost.createdAt)}}:</small>
         <h4 class="card-title">{{lastPost.title}}</h4>
         <span class="card-text text-muted text-truncate d-inline-block mw-100">
