@@ -1,13 +1,25 @@
 <app-auth-route>
   <app-main-layout>
     <div class="pt-3">
-      <div *ngFor="let user of users">
-        <app-user-card [user]="user"
-                       [isUndoAction]="notFollowing.includes(user)"
-                       doActionName="unfollow"
-                       [onDo]="onUnfollow"
-                       [onUndo]="onFollow"></app-user-card>
-      </div>
+      <ng-container *ngIf="users.length; then list else empty"></ng-container>
+      <ng-template #list>
+        <div *ngFor="let user of users">
+          <app-user-card [user]="user"
+                         [isUndoAction]="notFollowing.includes(user)"
+                         doActionName="unfollow"
+                         [onDo]="onUnfollow"
+                         [onUndo]="onFollow"></app-user-card>
+        </div>
+      </ng-template>
+      <ng-template #empty>
+        <div class="card bg-light">
+          <div class="card-body">
+            <h1 class="card-title text-muted">No one here... yet</h1>
+            <p class="text-muted">You are not following anyone for now.</p>
+            <p class="text-muted">Go to the <strong>explore</strong> tab and start following some people!</p>
+          </div>
+        </div>
+      </ng-template>
     </div>
   </app-main-layout>
 </app-auth-route>

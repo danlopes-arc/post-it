@@ -1,11 +1,23 @@
 <app-auth-route>
   <app-main-layout>
     <div class="pt-4">
-      <div *ngFor="let post of posts">
-        <div class="mb-3">
-          <app-post-card [post]="post"></app-post-card>
+      <ng-container *ngIf="posts.length; then list else empty"></ng-container>
+      <ng-template #list>
+        <div *ngFor="let post of posts">
+          <div class="mb-3">
+            <app-post-card [post]="post"></app-post-card>
+          </div>
         </div>
-      </div>
+      </ng-template>
+      <ng-template #empty>
+        <div class="card bg-light">
+          <div class="card-body">
+            <h1 class="card-title text-muted">No posts here</h1>
+            <p class="text-muted">The more people you follow, the more posts you see here.</p>
+            <p class="text-muted">Try <strong>exploring</strong> around...</p>
+          </div>
+        </div>
+      </ng-template>
     </div>
   </app-main-layout>
 </app-auth-route>
