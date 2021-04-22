@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="card-footer d-flex justify-content-center align-items-center">
-            <button class="btn btn-s btn-primary rounded-pill">new comment</button>
+            <button (click)="router.navigate(['posts', post?.id, 'comments', 'new'])" class="btn btn-s btn-primary rounded-pill">new comment</button>
         </div>
       </div>
       <div class="d-flex justify-content-center">
@@ -48,7 +48,7 @@
             </div>
           </div>
           <div class="card-body">
-            <p class="card-text">{{post?.body}}</p>
+            <p class="card-text">{{comment?.body}}</p>
           </div>
         </div>
       </ng-container>
