@@ -25,6 +25,8 @@ export class EditProfilePageComponent implements OnInit {
 
   user: User | null = null;
 
+  shouldDhowDeleteConfirmation = false;
+
   constructor(
     public router: Router,
     private auth: AuthService,
@@ -91,6 +93,19 @@ export class EditProfilePageComponent implements OnInit {
       }
     }
     return this.form.invalid && (this.isSubmitted || isShowingErrors);
+  }
+
+  onDeleteConfirm = async (): Promise<void> => {
+    if (!this.user) {
+      return;
+    }
+    await this.database.users.delete(this.user);
+    await this.auth.logout();
+    await this.router.navigate(['']);
+  }
+
+  onDeleteCancel = (): void => {
+    this.shouldDhowDeleteConfirmation = false;
   }
 
 }
