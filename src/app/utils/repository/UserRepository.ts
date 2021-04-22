@@ -3,6 +3,7 @@ import {User} from '../../models/User';
 import {Column} from './Column';
 import {runSql} from '../sql';
 import {Post} from '../../models/Post';
+import {Comment} from '../../models/Comment';
 
 export class UserRepository extends Repository<User> {
   constructor(database: Database) {
@@ -138,6 +139,10 @@ VALUES(?, ?, ?, ?);`;
 
   async getPostUser(post: Post): Promise<User | null> {
     return await this.findById(post.userId);
+  }
+
+  async getCommentUser(comment: Comment): Promise<User | null> {
+    return await this.findById(comment.userId);
   }
 
 }
