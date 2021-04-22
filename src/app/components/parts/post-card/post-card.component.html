@@ -6,13 +6,19 @@
         (click)="router.navigate(['posts', post?.id])"
         class="card-title">{{post?.title}}</h5>
     </div>
-    <span class="card-subtitle text-muted">
-      by
-      <span role="button"
-            (click)="router.navigate(['users', user?.id])"
-            class="fw-bold text-primary">
-      {{user?.username}}</span> {{getRelativeTime(post?.createdAt)}}
-    </span>
+    <div class="d-flex justify-content-between align-items-center">
+      <span class="card-subtitle text-muted">
+        by
+        <span role="button"
+              (click)="router.navigate(['users', user?.id])"
+              class="fw-bold text-primary">
+        {{user?.username}}</span> {{getRelativeTime(post?.createdAt)}}
+      </span>
+      <span class="badge rounded-pill bg-secondary">
+          {{commentCount}}
+        {{commentCount === 1 ? 'comment' : 'comments'}}
+        </span>
+    </div>
     <hr>
     <p
       role="button"

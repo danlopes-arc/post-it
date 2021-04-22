@@ -14,6 +14,7 @@ export class PostCardComponent implements OnInit {
 
   getRelativeTime = getRelativeTime;
   user: User | null = null;
+  commentCount = 0;
 
   @Input() post: Post | null = null;
 
@@ -26,6 +27,9 @@ export class PostCardComponent implements OnInit {
       return;
     }
     this.user = await this.database.users.getPostUser(this.post);
+
+    const comments = await this.database.comments.getPostComments(this.post);
+    this.commentCount = comments.length;
   }
 
 }
