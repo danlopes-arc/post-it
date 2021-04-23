@@ -31,6 +31,7 @@ import { NewCommentPageComponent } from './components/pages/new-comment-page/new
 import { EditCommentPageComponent } from './components/pages/edit-comment-page/edit-comment-page.component';
 import { CommentCardComponent } from './components/parts/comment-card/comment-card.component';
 import { ModalComponent } from './components/parts/modal/modal.component';
+import { MapModalComponent } from './components/parts/map-modal/map-modal.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { ModalComponent } from './components/parts/modal/modal.component';
     NewCommentPageComponent,
     EditCommentPageComponent,
     CommentCardComponent,
-    ModalComponent
+    ModalComponent,
+    MapModalComponent
   ],
   imports: [
     BrowserModule,

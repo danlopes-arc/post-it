@@ -1,7 +1,6 @@
 <app-auth-route>
   <app-main-layout>
     <div class="">
-      <div class="bg-dark" id="map" style="width: 100%; height: 200px" #map></div>
       <div class="card mt-3">
         <div class="card-body">
           <div class="d-flex justify-content-between">
@@ -22,6 +21,7 @@
           <span *ngIf="address" class="card-subtitle text-muted">
             at
             <span role="button"
+                  (click)="onOpenMap()"
                   class="text-primary">
               {{address}} </span>
           </span>
@@ -45,6 +45,11 @@
       <ng-container *ngFor="let comment of postComments">
         <app-comment-card [comment]="comment"></app-comment-card>
       </ng-container>
+      <app-map-modal *ngIf="shouldShowMap"
+                     [latitude]="post?.latitude || 0"
+                     [longitude]="post?.longitude || 0"
+                     [address]="address"
+                     [onCancel]="onCloseMap"></app-map-modal>
     </div>
   </app-main-layout>
 </app-auth-route>

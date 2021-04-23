@@ -24,7 +24,7 @@ export class ViewPostPageComponent implements OnInit {
   userComments: Comment[] = [];
   commentators: User[] = [];
   address: string | null = null;
-  @ViewChild('map') map: ElementRef | null = null;
+  shouldShowMap = false;
 
   constructor(public router: Router,
               private database: DatabaseService,
@@ -47,7 +47,6 @@ export class ViewPostPageComponent implements OnInit {
     }
     if (this.post.hasCoordinates()) {
       this.address = await getCoordinatesAddress(this.post.latitude || 0, this.post.longitude || 0);
-      this.loadMap();
     }
     this.authUser = await this.auth.getUser();
     this.postUser = await this.database.users.getPostUser(this.post);
@@ -62,43 +61,7 @@ export class ViewPostPageComponent implements OnInit {
     }
   }
 
-  async loadMap(): Promise<void> {
-    const mapContainer = document.getElementById('map');
-    if (!mapContainer) {
-      return;
-    }
-    const coords = {
-      lat: this.post?.latitude || 0,
-      lng: this.post?.longitude || 0
-    };
-    const platform = new H.service.Platform({
-      apikey: 'phG3bW_BRgRzfbyc_k8LlWDhKyDqE_VYEPfMX4fApPA'
-    });
-    const defaultLayers = platform.createDefaultLayers();
-    // Instantiate (and display) a map object:
-    const map = new H.Map(
-      mapContainer,
-      defaultLayers.vector.normal.map,
-      {
-        zoom: 14,
-        center: coords,
-        pixelRatio: window.devicePixelRatio || 1
-      });
-    window.addEventListener('resize', () => map.getViewPort().resize());
-    const icon = new H.map.Icon('assets/marker.svg');
-    const marker = new H.map.Marker(coords, {icon});
-    map.addObject(marker);
-
-    // // Advanced stuff
-    // // Map Controls
-    // const ui = H.ui.UI.createDefault(map, defaultLayers);
-    // ui.getControl('mapsettings').setVisibility(false);
-    // const bubble = new H.ui.InfoBubble(coords, {
-    //   content: this.address || ''
-    // });
-    // // Dragging and scroll/pinch functionality
-    // tslint:disable-next-line:no-unused-expression
-    // new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
-  }
+  onOpenMap = () => this.shouldShowMap = true;
+  onCloseMap = () => this.shouldShowMap = false;
 
 }

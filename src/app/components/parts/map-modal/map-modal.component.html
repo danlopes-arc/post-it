@@ -1,0 +1,17 @@
+<div class="position-fixed top-50 start-50 translate-middle w-100 h-100 p-4"
+     style="z-index: 1000">
+  <div class="card w-100 h-100" style="z-index: 1100;">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h6 class="text-truncate">{{address}}</h6>
+      <img role="button"
+           (click)="onCancel()"
+           src="assets/x.svg"
+           alt="close"
+           height="24">
+    </div>
+    <div class="bg-dark w-100 h-100" id="map" #map></div>
+  </div>
+</div>
+<div class="position-fixed vh-100 w-100 top-0 start-0 bg-dark"
+     (click)="onCancel()"
+     style="z-index: 900; opacity: 90%;"></div>
