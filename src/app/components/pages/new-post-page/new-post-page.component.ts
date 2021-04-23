@@ -5,6 +5,7 @@ import {AuthService} from '../../../services/auth.service';
 import {DatabaseService} from '../../../services/database.service';
 import {Location} from '@angular/common';
 import {Post} from '../../../models/Post';
+import {getCoordinatesAddress, getCurrentLocation} from '../../../utils/geolocation';
 
 @Component({
   selector: 'app-new-post-page',
@@ -24,10 +25,14 @@ export class NewPostPageComponent implements OnInit {
       Validators.minLength(1),
       Validators.maxLength(300)
     ]],
+    saveLocation: [false, []],
   });
 
   isLoading = false;
   isSubmitted = false;
+  address: string | null = null;
+  latitude = 0;
+  longitude = 0;
 
   constructor(
     public router: Router,
@@ -64,6 +69,10 @@ export class NewPostPageComponent implements OnInit {
     post.userId = user.id;
     post.title = this.form.get('title')?.value || '';
     post.body = this.form.get('body')?.value || '';
+    if (this.address) {
+      post.latitude = this.latitude;
+      post.longitude = this.longitude;
+    }
 
     post = await this.database.posts.create(post) ?? post;
     await this.router.navigate(['posts', post?.id]);
@@ -90,5 +99,22 @@ export class NewPostPageComponent implements OnInit {
       }
     }
     return this.form.invalid && (this.isSubmitted || isShowingErrors);
+  }
+
+  async onSaveLocationSelected(): Promise<void> {
+    if (!this.form.get('saveLocation')?.value) {
+      const resp = await getCurrentLocation();
+      if (!resp.location) {
+        this.form.get('saveLocation')?.setValue(false);
+      } else {
+        this.latitude = resp.location.coords.latitude;
+        this.longitude = resp.location.coords.longitude;
+        this.address = await getCoordinatesAddress(this.latitude, this.longitude);
+        return;
+      }
+    }
+    this.latitude = 0;
+    this.longitude = 0;
+    this.address = null;
   }
 }
