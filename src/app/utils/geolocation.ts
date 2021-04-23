@@ -11,6 +11,10 @@ export const getCurrentLocation = (): Promise<GeolocationResponse> =>
       resolve({location});
     }, error => {
       resolve({error});
+    }, {
+      maximumAge: 30000,
+      timeout: 5000,
+      enableHighAccuracy: true,
     });
   });
 
