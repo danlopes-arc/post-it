@@ -14,6 +14,7 @@ import {EditPostPageComponent} from './components/pages/edit-post-page/edit-post
 import {ViewPostPageComponent} from './components/pages/view-post-page/view-post-page.component';
 import {NewCommentPageComponent} from './components/pages/new-comment-page/new-comment-page.component';
 import {EditCommentPageComponent} from './components/pages/edit-comment-page/edit-comment-page.component';
+import {SettingsPageComponent} from './components/pages/settings-page/settings-page.component';
 
 const routes: Routes = [
   {path: '', component: HomePageComponent},
@@ -23,6 +24,7 @@ const routes: Routes = [
   {path: 'following', component: FollowingPageComponent},
   {path: 'timeline', component: TimelinePageComponent},
   {path: 'about', component: AboutPageComponent},
+  {path: 'settings', component: SettingsPageComponent},
   {path: 'profile', component: ProfilePageComponent},
   {path: 'profile/edit', component: EditProfilePageComponent},
   {path: 'users/:id', component: ProfilePageComponent},
