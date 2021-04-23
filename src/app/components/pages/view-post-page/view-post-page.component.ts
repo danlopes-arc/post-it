@@ -80,22 +80,25 @@ export class ViewPostPageComponent implements OnInit {
       mapContainer,
       defaultLayers.vector.normal.map,
       {
-        zoom: 10,
+        zoom: 14,
         center: coords,
         pixelRatio: window.devicePixelRatio || 1
       });
     window.addEventListener('resize', () => map.getViewPort().resize());
-    const ui = H.ui.UI.createDefault(map, defaultLayers);
-    ui.getControl('mapsettings').setVisibility(false);
-    const bubble = new H.ui.InfoBubble(coords, {
-      content: this.address || ''
-    });
-    // tslint:disable-next-line:no-unused-expression
-    new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
-    // ui.addBubble(bubble);
     const icon = new H.map.Icon('assets/marker.svg');
     const marker = new H.map.Marker(coords, {icon});
     map.addObject(marker);
+
+    // // Advanced stuff
+    // // Map Controls
+    // const ui = H.ui.UI.createDefault(map, defaultLayers);
+    // ui.getControl('mapsettings').setVisibility(false);
+    // const bubble = new H.ui.InfoBubble(coords, {
+    //   content: this.address || ''
+    // });
+    // // Dragging and scroll/pinch functionality
+    // tslint:disable-next-line:no-unused-expression
+    // new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
   }
 
 }
