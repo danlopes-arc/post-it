@@ -6,6 +6,7 @@ import {DatabaseService} from '../../../services/database.service';
 import {AuthService} from '../../../services/auth.service';
 import {Comment} from '../../../models/Comment';
 import {getRelativeTime} from '../../../utils/relativeTime';
+import {getCoordinatesAddress} from '../../../utils/geolocation';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class ViewPostPageComponent implements OnInit {
   postComments: Comment[] = [];
   userComments: Comment[] = [];
   commentators: User[] = [];
+  address: string | null = null;
 
   constructor(public router: Router,
               private database: DatabaseService,
@@ -41,6 +43,9 @@ export class ViewPostPageComponent implements OnInit {
     if (!this.post) {
       await this.router.navigate(['timeline']);
       return;
+    }
+    if (this.post.hasCoordinates()) {
+      this.address = await getCoordinatesAddress(this.post.latitude || 0, this.post.longitude || 0);
     }
     this.authUser = await this.auth.getUser();
     this.postUser = await this.database.users.getPostUser(this.post);

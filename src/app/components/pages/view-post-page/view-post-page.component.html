@@ -7,7 +7,8 @@
             <h1 class="card-title">{{post?.title}}</h1>
             <div *ngIf="authUser?.id === postUser?.id" class="d-flex justify-content-center align-items-start">
               <button (click)="router.navigate(['posts', post?.id, 'edit'])"
-                      class="btn btn-sm btn-outline-primary rounded-pill">Edit</button>
+                      class="btn btn-sm btn-outline-primary rounded-pill">Edit
+              </button>
             </div>
           </div>
           <span class="card-subtitle text-muted">
@@ -16,6 +17,12 @@
                   (click)="router.navigate(['users', postUser?.id])"
                   class="fw-bold text-primary">
             {{postUser?.username}}</span> {{getRelativeTime(post?.createdAt)}}
+          </span><br>
+          <span *ngIf="address" class="card-subtitle text-muted">
+            at
+            <span role="button"
+                  class="text-primary">
+              {{address}} </span>
           </span>
           <hr>
           <p class="card-text">{{post?.body}}</p>
@@ -23,7 +30,9 @@
           </div>
         </div>
         <div class="card-footer d-flex justify-content-center align-items-center">
-            <button (click)="router.navigate(['posts', post?.id, 'comments', 'new'])" class="btn btn-s btn-primary rounded-pill">new comment</button>
+          <button (click)="router.navigate(['posts', post?.id, 'comments', 'new'])"
+                  class="btn btn-s btn-primary rounded-pill">new comment
+          </button>
         </div>
       </div>
       <div class="d-flex justify-content-center">
