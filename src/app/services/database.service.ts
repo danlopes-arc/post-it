@@ -49,7 +49,6 @@ export class DatabaseService {
     }
 
     await this.initializeDatabase();
-    await this.seed();
   }
 
   async initializeDatabase(): Promise<void> {
