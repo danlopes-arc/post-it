@@ -28,7 +28,7 @@ export class SettingsPageComponent implements OnInit {
   async onClear(): Promise<void> {
     this.isLoading = true;
     this.isClearLoading = true;
-    await this.database.resetDatabase();
+    await this.database.clearDatabase();
     this.isSeedDisabled = false;
     await this.auth.logout();
     this.isLoading = false;
@@ -38,7 +38,7 @@ export class SettingsPageComponent implements OnInit {
   async onSeed(): Promise<void> {
     this.isLoading = true;
     this.isSeedLoading = true;
-    await this.database.seed();
+    await this.database.seedDatabase();
     this.isSeedDisabled = true;
     this.isLoading = false;
     this.isSeedLoading = false;
